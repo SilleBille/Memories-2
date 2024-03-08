@@ -34,6 +34,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -52,9 +53,11 @@ android {
 }
 
 dependencies {
-    api("com.github.nextcloud:android-library:2.18.0")
+    api(libs.nextcloud.android.library)
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(libs.androidx.core.ktx)
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2024.02.02"))
@@ -62,6 +65,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation(libs.nextcloud.sso)
 
     testImplementation("junit:junit:4.13.2")
 

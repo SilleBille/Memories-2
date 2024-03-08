@@ -1,0 +1,11 @@
+[versions]
+androidxCore = "1.12.0"
+desugar_jdk_libs = "2.0.4"
+nextcloudAndroid = "2.18.0"
+nextcloudSso = "1.1.0"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+nextcloud-android-library = { group = "com.github.nextcloud", name = "android-library", version.ref = "nextcloudAndroid"}
+nextcloud-sso = { group = "com.github.nextcloud", name="Android-SingleSignOn", version.ref = "nextcloudSso"}
