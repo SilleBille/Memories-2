@@ -1,8 +1,7 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.memories.android.application)
+    alias(libs.plugins.memories.android.application.compose)
+    //alias(libs.plugins.memories.android.hilt)
 }
 
 android {
@@ -63,11 +62,11 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.hilt.android)
+    //implementation(libs.hilt.android)
     implementation(libs.nextcloud.sso)
     implementation(libs.hilt.android)
 
-    ksp(libs.hilt.compiler)
+    //ksp(libs.hilt.compiler)
 
     testImplementation(libs.junit)
 
