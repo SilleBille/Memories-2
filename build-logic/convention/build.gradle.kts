@@ -70,10 +70,10 @@ gradlePlugin {
             id = "memories.android.test"
             implementationClass = "AndroidTestConventionPlugin"
         }
-        /*register("androidHilt") {
+        register("androidHilt") {
             id = "memories.android.hilt"
-            implementationClass = "AndroidHiltConventionPlugin.kt"
-        }*/
+            implementationClass = "AndroidHiltConventionPlugin"
+        }
         register("jvmLibrary") {
             id = "memories.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
