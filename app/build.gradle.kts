@@ -36,7 +36,6 @@ android {
 }
 
 dependencies {
-    api(libs.nextcloud.android.library)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
@@ -46,7 +45,6 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.nextcloud.sso)
 
     ksp(libs.hilt.compiler)
 
