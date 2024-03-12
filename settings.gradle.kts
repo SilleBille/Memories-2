@@ -19,3 +19,5 @@ dependencyResolutionManagement {
 rootProject.name = "Memories"
 include(":app")
 include(":core:auth")
+include(":core:designsystem")
+include(":feature:login")

@@ -58,6 +58,10 @@ gradlePlugin {
             id = "memories.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
+        register("androidFeature") {
+            id = "memories.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
         register("androidLibraryCompose") {
             id = "memories.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
