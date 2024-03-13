@@ -17,7 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mkd.mkd.designsystem.theme.Memories2Theme
+import com.mkd.mkd.designsystem.theme.MemoriesTheme
 
 @Composable
 internal fun LoginRoute(
@@ -30,8 +30,8 @@ internal fun LoginRoute(
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    Memories2Theme {
+fun LoginRoutePreview() {
+    MemoriesTheme {
         LoginRoute()
     }
 }
