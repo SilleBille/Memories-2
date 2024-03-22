@@ -21,11 +21,11 @@ import androidx.compose.ui.Modifier
 import com.mkd.memories.navigation.MemoriesNavHost
 
 @Composable
-fun MemoriesApp() {
+fun MemoriesApp(appState: MemoriesAppState) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        MemoriesNavHost()
+        MemoriesNavHost(appState = appState)
     }
 }

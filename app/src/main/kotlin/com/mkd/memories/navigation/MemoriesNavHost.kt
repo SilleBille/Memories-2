@@ -18,9 +18,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.mkd.memories.login.navigation.LOGIN_ROUTE
 import com.mkd.memories.login.navigation.loginScreen
+import com.mkd.memories.ui.MemoriesAppState
 
 @Composable
 fun MemoriesNavHost(
+    appState: MemoriesAppState,
     startDestination: String = LOGIN_ROUTE,
 ) {
     val navController = rememberNavController()
