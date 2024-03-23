@@ -6,7 +6,6 @@ plugins {
 
 android {
     namespace = "com.mkd.memories"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.mkd.memories"
