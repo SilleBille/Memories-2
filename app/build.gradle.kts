@@ -54,12 +54,11 @@ dependencies {
 
     ksp(libs.hilt.compiler)
 
-    testImplementation(libs.junit)
+    kspTest(libs.hilt.compiler)
 
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test)
+    testImplementation(project(":core:testing"))
+    testImplementation(libs.hilt.android.testing)
 
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    androidTestImplementation(project(":core:testing"))
+    androidTestImplementation(libs.hilt.android.testing)
 }

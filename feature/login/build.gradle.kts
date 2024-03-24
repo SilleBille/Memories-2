@@ -10,4 +10,9 @@ android {
 
 dependencies {
     implementation(project(":core:auth"))
+
+    testImplementation(libs.hilt.android.testing)
+    testImplementation(project(":core:testing"))
+
+    androidTestImplementation(project(":core:testing"))
 }

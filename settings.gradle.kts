@@ -20,4 +20,6 @@ rootProject.name = "Memories"
 include(":app")
 include(":core:auth")
 include(":core:designsystem")
+include(":core:testing")
+
 include(":feature:login")
