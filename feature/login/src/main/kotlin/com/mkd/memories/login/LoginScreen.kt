@@ -78,8 +78,8 @@ internal fun LoginItem(buttonText: String, onClick: () -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun LoginRoutePreview() {
+fun LoginItemPreview() {
     MemoriesTheme {
-        LoginRoute()
+        LoginItem("Continue with SSO login") {}
     }
 }
