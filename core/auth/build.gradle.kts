@@ -25,7 +25,5 @@ android {
 }
 
 dependencies {
-
-
     implementation(libs.nextcloud.sso)
 }

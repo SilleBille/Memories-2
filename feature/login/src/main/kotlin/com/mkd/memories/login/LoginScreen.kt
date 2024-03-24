@@ -13,19 +13,67 @@
 
 package com.mkd.memories.login
 
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mkd.memories.core.auth.util.ChooseAccountContract
+import com.mkd.memories.core.auth.util.RequestAuthTokenContract
 import com.mkd.mkd.designsystem.theme.MemoriesTheme
 
 @Composable
 internal fun LoginRoute(
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    Text(
-        text = "Hello World, MKD!"
+
+    // Initialize the context for creating RequestAuthTokenContract
+    viewModel.createRequestAuthTokenContract(LocalContext.current)
+    LoginScreen(
+        chooseAccountContract = viewModel.chooseAccountContract,
+        requestAuthTokenContract = viewModel.requestAuthTokenContract
     )
+}
+
+@Composable
+internal fun LoginScreen(
+    chooseAccountContract: ChooseAccountContract,
+    requestAuthTokenContract: RequestAuthTokenContract
+) {
+
+    Column(
+        modifier = Modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        // SSO Button
+        val authTokenLauncherResult =
+            rememberLauncherForActivityResult(requestAuthTokenContract) { _ ->
+
+                Log.e("MKD", "Result came back to Login Screen")
+            }
+        val accountChooserResult = rememberLauncherForActivityResult(chooseAccountContract) { name ->
+            authTokenLauncherResult.launch(name)
+        }
+        LoginItem(
+            buttonText = stringResource(id = R.string.feature_login_continue_with_sso_button_text)
+        ) {
+            accountChooserResult.launch(null)
+        }
+    }
+}
+
+@Composable
+internal fun LoginItem(buttonText: String, onClick: () -> Unit) {
+    Button(onClick = onClick) {
+        Text(text = buttonText)
+    }
 }
 
 @Preview(showBackground = true)

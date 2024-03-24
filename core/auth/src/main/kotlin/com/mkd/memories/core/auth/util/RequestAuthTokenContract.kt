@@ -28,16 +28,16 @@ import com.nextcloud.android.sso.helper.SingleAccountHelper
 import com.nextcloud.android.sso.model.FilesAppType
 import com.nextcloud.android.sso.model.SingleSignOnAccount
 import com.nextcloud.android.sso.ui.UiExceptionManager
-import dagger.hilt.android.qualifiers.ActivityContext
-import javax.inject.Inject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
 /**
  * A Custom contract that fetches the request Auth token that can used with NextCloudAPI. This
  * contract requires the account name to be passed as input and returns an instance of
  * [SingleSignOnAccount]
  */
-class RequestAuthTokenContract @Inject constructor(
-    @ActivityContext private val context: Context
+class RequestAuthTokenContract @AssistedInject constructor(
+    @Assisted private val context: Context
 ) : ActivityResultContract<String?, SingleSignOnAccount?>() {
 
     @Throws(NextcloudFilesAppAccountPermissionNotGrantedException::class)
@@ -63,7 +63,7 @@ class RequestAuthTokenContract @Inject constructor(
                 REQUEST_AUTH_TOKEN_SSO,
                 resultCode,
                 intent,
-                context as Activity // We are getting @ActivityContext. So, this should be fine
+                context as Activity // Context is from LocalContext.current, which is activity
             ) { account ->
                 // As this library supports multiple accounts we created some helper methods if you
                 // only want to use one. The following line stores the selected account as the

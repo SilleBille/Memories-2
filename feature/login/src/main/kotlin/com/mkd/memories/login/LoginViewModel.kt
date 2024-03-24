@@ -13,10 +13,23 @@
 
 package com.mkd.memories.login
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.mkd.memories.core.auth.di.RequestAuthTokenContractFactory
+import com.mkd.memories.core.auth.util.ChooseAccountContract
+import com.mkd.memories.core.auth.util.RequestAuthTokenContract
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(
+    val chooseAccountContract: ChooseAccountContract,
+    private val requestAuthTokenContractFactory: RequestAuthTokenContractFactory
+) : ViewModel() {
+
+    lateinit var requestAuthTokenContract: RequestAuthTokenContract
+    fun createRequestAuthTokenContract(context: Context) {
+        requestAuthTokenContract = requestAuthTokenContractFactory.create(context)
+    }
+
 }
