@@ -1,23 +1,25 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2024 SilleBille
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the License.
+ *
  */
 
 package com.mkd.memories
 
+import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.api.variant.ScopedArtifacts
 import org.gradle.api.Project
+import org.gradle.api.file.Directory
+import org.gradle.api.file.RegularFile
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.register
@@ -32,13 +34,24 @@ private val coverageExclusions = listOf(
     "**/R.class",
     "**/R\$*.class",
     "**/BuildConfig.*",
-    "**/Manifest*.*"
+    "**/Manifest*.*",
+    "**/*_Hilt*.class",
+    "**/Hilt_*.class",
 )
 
 private fun String.capitalize() = replaceFirstChar {
     if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
 }
 
+/**
+ * Creates a new task that generates a combined coverage report with data from local and
+ * instrumented tests.
+ *
+ * `create{variant}CombinedCoverageReport`
+ *
+ * Note that coverage data must exist before running the task. This allows us to run device
+ * tests on CI using a different Github Action or an external device farm.
+ */
 internal fun Project.configureJacoco(
     androidComponentsExtension: AndroidComponentsExtension<*, *, *>,
 ) {
@@ -46,37 +59,61 @@ internal fun Project.configureJacoco(
         toolVersion = libs.findVersion("jacoco").get().toString()
     }
 
-    val jacocoTestReport = tasks.create("jacocoTestReport")
-
     androidComponentsExtension.onVariants { variant ->
-        val testTaskName = "test${variant.name.capitalize()}UnitTest"
+        val myObjFactory = project.objects
         val buildDir = layout.buildDirectory.get().asFile
-        val reportTask = tasks.register("jacoco${testTaskName.capitalize()}Report", JacocoReport::class) {
-            dependsOn(testTaskName)
+        val allJars: ListProperty<RegularFile> = myObjFactory.listProperty(RegularFile::class.java)
+        val allDirectories: ListProperty<Directory> =
+            myObjFactory.listProperty(Directory::class.java)
+        val reportTask =
+            tasks.register(
+                "create${variant.name.capitalize()}CombinedCoverageReport",
+                JacocoReport::class
+            ) {
+                classDirectories.setFrom(
+                    allJars,
+                    allDirectories.map { dirs ->
+                        dirs.map { dir ->
+                            myObjFactory.fileTree().setDir(dir).exclude(coverageExclusions)
+                        }
+                    }
+                )
+                reports {
+                    xml.required.set(true)
+                    html.required.set(true)
+                }
 
-            reports {
-                xml.required.set(true)
-                html.required.set(true)
+                // TODO: This is missing files in src/debug/, src/prod, src/demo, src/demoDebug...
+                sourceDirectories.setFrom(
+                    files(
+                        "$projectDir/src/main/java",
+                        "$projectDir/src/main/kotlin"
+                    )
+                )
+
+                executionData.setFrom(
+                    project.fileTree("$buildDir/outputs/unit_test_code_coverage/${variant.name}UnitTest")
+                        .matching { include("**/*.exec") },
+
+                    project.fileTree("$buildDir/outputs/code_coverage/${variant.name}AndroidTest")
+                        .matching { include("**/*.ec") }
+                )
             }
 
-            classDirectories.setFrom(
-                fileTree("$buildDir/tmp/kotlin-classes/${variant.name}") {
-                    exclude(coverageExclusions)
-                }
+
+        variant.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+            .use(reportTask)
+            .toGet(
+                ScopedArtifact.CLASSES,
+                { _ -> allJars },
+                { _ -> allDirectories },
             )
-
-            sourceDirectories.setFrom(files("$projectDir/src/main/java", "$projectDir/src/main/kotlin"))
-            executionData.setFrom(file("$buildDir/jacoco/$testTaskName.exec"))
-        }
-
-        jacocoTestReport.dependsOn(reportTask)
     }
 
     tasks.withType<Test>().configureEach {
         configure<JacocoTaskExtension> {
             // Required for JaCoCo + Robolectric
             // https://github.com/robolectric/robolectric/issues/2230
-            // TODO: Consider removing if not we don't add Robolectric
             isIncludeNoLocationClasses = true
 
             // Required for JDK 11 with the above
