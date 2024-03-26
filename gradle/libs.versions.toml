@@ -15,6 +15,7 @@ coil = "2.5.0"
 desugar_jdk_libs = "2.0.4"
 espressoCore = "3.5.1"
 hilt = "2.51"
+jacoco = "0.8.7"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 kotlin = "1.9.22"
@@ -75,9 +76,11 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 # Plugins defined by this project
 memories-android-application = { id = "memories.android.application", version = "unspecified" }
 memories-android-application-compose = { id = "memories.android.application.compose", version = "unspecified" }
+memories-android-application-jacoco = { id = "nowinandroid.android.application.jacoco", version = "unspecified" }
 memories-android-feature = { id = "memories.android.feature", version = "unspecified" }
 memories-android-hilt = { id = "memories.android.hilt", version = "unspecified" }
 memories-android-library = { id = "memories.android.library", version = "unspecified" }
 memories-android-library-compose = { id = "memories.android.library.compose", version = "unspecified" }
+memories-android-library-jacoco = { id = "memories.android.library.jacoco", version = "unspecified" }
 memories-android-test = { id = "memories.android.test", version = "unspecified" }
 memories-jvm-library = { id = "memories.jvm.library", version = "unspecified" }

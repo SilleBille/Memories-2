@@ -58,6 +58,10 @@ gradlePlugin {
             id = "memories.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
+        register("androidApplicationJacoco") {
+            id = "nowinandroid.android.application.jacoco"
+            implementationClass = "AndroidApplicationJacocoConventionPlugin"
+        }
         register("androidFeature") {
             id = "memories.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
@@ -69,6 +73,10 @@ gradlePlugin {
         register("androidLibrary") {
             id = "memories.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("androidLibraryJacoco") {
+            id = "memories.android.library.jacoco"
+            implementationClass = "AndroidLibraryJacocoConventionPlugin"
         }
         register("androidTest") {
             id = "memories.android.test"
