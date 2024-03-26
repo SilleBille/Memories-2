@@ -133,7 +133,7 @@ jobs:
           path: '**/build/reports/androidTests'
 
       - name: Display local test coverage (only API 30)
-        if: matrix.api-level == 30
+        if: matrix.api-level == 34
         id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
         with:
@@ -145,7 +145,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload local coverage reports (XML + HTML) (only API 30)
-        if: matrix.api-level == 30
+        if: matrix.api-level == 34
         uses: actions/upload-artifact@v4
         with:
           name: coverage-reports
