@@ -166,7 +166,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report-markdown
-          path: */coverage-results.md
+          path: ${{ github.workspace }}/coverage-results.md
           retention-days: 1
 
 #      - name: Upload local coverage reports (XML + HTML) (only API 34)
