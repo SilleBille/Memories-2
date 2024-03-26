@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.memories.android.feature)
     alias(libs.plugins.memories.android.library.compose)
-    alias(libs.plugins.memories.android.hilt)
+    alias(libs.plugins.memories.android.library.jacoco)
 }
 
 android {
