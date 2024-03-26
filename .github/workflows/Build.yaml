@@ -123,7 +123,7 @@ jobs:
           name: test-reports-${{ matrix.api-level }}
           path: '**/build/reports/androidTests'
 
-      - name: Run local tests (including Roborazzi) for the combined coverage report (only API 30)
+      - name: Run local tests for the combined coverage report (only API 34)
         if: matrix.api-level == 34
         run: ./gradlew testDebugUnitTest
 
@@ -132,49 +132,29 @@ jobs:
         if: matrix.api-level == 34
         run: ./gradlew createDebugCombinedCoverageReport
 
-#      - name: Display local test coverage on PR (only API 34)
-#        if: matrix.api-level == 34
-#        id: jacoco
-#        uses: madrapps/jacoco-report@v1.6.1
-#        with:
-#          title: Combined test coverage report
-#          min-coverage-overall: 40
-#          min-coverage-changed-files: 60
-#          paths: |
-#            ${{ github.workspace }}/**/build/reports/jacoco/**/*Report.xml
-#          token: ${{ secrets.GITHUB_TOKEN }}
-
-      # generates coverage-report.md and publishes as checkrun
-      - name: JaCoCo Code Coverage Report (only API 34)
+      - name: Display local test coverage on PR (only API 34)
         if: matrix.api-level == 34
         id: jacoco_reporter
-        uses: PavanMudigonda/jacoco-reporter@v5.0
+        uses: madrapps/jacoco-report@v1.6.1
         with:
-          coverage_results_path: ${{ github.workspace }}/**/build/reports/jacoco/**/*Report.xml
-          coverage_report_name: Coverage
-          coverage_report_title: JaCoCo Code Coverage
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          title: Combined test coverage report
+          min-coverage-overall: 40
+          min-coverage-changed-files: 60
+          paths: |
+            ${{ github.workspace }}/**/build/reports/jacoco/**/*Report.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # Publish Coverage Job Summary  # Optional
       - name: Add Coverage Job Summary (only API 34)
         if: matrix.api-level == 34
-        run: echo "${{ steps.jacoco_reporter.outputs.coverageSummary }}" >> $GITHUB_STEP_SUMMARY
+        run: echo "${{ steps.jacoco_reporter.outputs.coverage-overall }}" >> $GITHUB_STEP_SUMMARY
 
-      # uploads the coverage-report.md artifact
-      - name: Upload Code Coverage Artifacts
+      - name: Upload local coverage reports (XML + HTML) (only API 34)
         if: matrix.api-level == 34
         uses: actions/upload-artifact@v4
         with:
-          name: code-coverage-report-markdown
-          path: ${{ github.workspace }}/coverage-results.md
-          retention-days: 1
-
-#      - name: Upload local coverage reports (XML + HTML) (only API 34)
-#        if: matrix.api-level == 34
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: coverage-reports
-#          if-no-files-found: error
-#          compression-level: 1
-#          overwrite: false
-#          path: '**/build/reports/jacoco/'
+          name: coverage-reports
+          if-no-files-found: error
+          compression-level: 1
+          overwrite: false
+          path: '**/build/reports/jacoco/'
