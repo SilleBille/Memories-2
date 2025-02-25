@@ -13,73 +13,107 @@
 
 package com.mkd.memories.login
 
-import android.util.Log
+import android.accounts.AccountManager
+import android.app.Activity
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mkd.memories.core.auth.util.ChooseAccountContract
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mkd.memories.core.auth.util.RequestAuthTokenContract
 import com.mkd.mkd.designsystem.theme.MemoriesTheme
 
 @Composable
 internal fun LoginRoute(
+    onAccountSelected: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
-    // Initialize the context for creating RequestAuthTokenContract
-    viewModel.createRequestAuthTokenContract(LocalContext.current)
+    val authTokenLauncher = rememberLauncherForActivityResult(RequestAuthTokenContract(context)) {
+        Toast.makeText(context, "Account selected: ${it?.name}", Toast.LENGTH_SHORT).show()
+        viewModel.onAccountPickerDismiss(it)
+    }
+
+    val accountPickerLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            when (result.resultCode) {
+                Activity.RESULT_OK -> {
+                    val accountName = result.data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
+
+                    // Launch the second contract only if an account is selected
+                    accountName?.let { authTokenLauncher.launch(it) }
+                }
+
+                Activity.RESULT_CANCELED -> {
+                    viewModel.onAccountPickerDismiss(null)
+                }
+            }
+
+        }
+
+    LaunchedEffect(uiState.selectedAccount) {
+        uiState.selectedAccount?.let { onAccountSelected() }
+    }
+
     LoginScreen(
-        chooseAccountContract = viewModel.chooseAccountContract,
-        requestAuthTokenContract = viewModel.requestAuthTokenContract
+        modifier = Modifier.fillMaxSize(),
+        onSsoClick = viewModel::onSsoClick,
     )
+
+    if (uiState.showAccountPicker) {
+        val intent = viewModel.getSsoIntent()
+        accountPickerLauncher.launch(intent)
+    }
 }
 
 @Composable
 internal fun LoginScreen(
-    chooseAccountContract: ChooseAccountContract,
-    requestAuthTokenContract: RequestAuthTokenContract
+    onSsoClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-
-    Column(
-        modifier = Modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
     ) {
-        // SSO Button
-        val authTokenLauncherResult =
-            rememberLauncherForActivityResult(requestAuthTokenContract) { _ ->
-
-                Log.e("MKD", "Result came back to Login Screen")
+        Scaffold {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = onSsoClick) {
+                    Text(text = stringResource(id = R.string.feature_login_continue_with_sso_button_text))
+                }
             }
-        val accountChooserResult = rememberLauncherForActivityResult(chooseAccountContract) { name ->
-            authTokenLauncherResult.launch(name)
-        }
-        LoginItem(
-            buttonText = stringResource(id = R.string.feature_login_continue_with_sso_button_text)
-        ) {
-            accountChooserResult.launch(null)
         }
     }
 }
 
-@Composable
-internal fun LoginItem(buttonText: String, onClick: () -> Unit) {
-    Button(onClick = onClick) {
-        Text(text = buttonText)
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
 fun LoginItemPreview() {
     MemoriesTheme {
-        LoginItem("Continue with SSO login") {}
+        LoginScreen(onSsoClick = {})
     }
 }

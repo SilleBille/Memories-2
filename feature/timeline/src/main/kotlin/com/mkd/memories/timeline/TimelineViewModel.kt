@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 SilleBille
+ * Copyright 2025 SilleBille
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -11,16 +11,14 @@
  *
  */
 
-package com.mkd.memories.login
+package com.mkd.memories.timeline
 
-import android.accounts.AccountManager
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException
 import com.nextcloud.android.sso.helper.SingleAccountHelper
-import com.nextcloud.android.sso.model.FilesAppType
 import com.nextcloud.android.sso.model.SingleSignOnAccount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,33 +26,30 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-data class LoginUIState(
-    val showAccountPicker: Boolean,
+data class TimelineUIState(
     val selectedAccount: SingleSignOnAccount?,
 ) {
     companion object {
-        val Initial = LoginUIState(
-            showAccountPicker = false,
-            selectedAccount = null,
+        val Initial = TimelineUIState(
+            selectedAccount = null
         )
     }
 }
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    @ApplicationContext private val context: Context
+class TimelineViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(LoginUIState.Initial)
+    private val _uiState = MutableStateFlow(TimelineUIState.Initial)
     val uiState = _uiState
-        .onStart { initializeLoginScreen() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), LoginUIState.Initial)
+        .onStart { initializeTimelineScreen() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TimelineUIState.Initial)
 
-    private fun initializeLoginScreen() {
-        _uiState.update { it.copy(selectedAccount = getAccount()) }
+    private fun initializeTimelineScreen() {
+        _uiState.value = _uiState.value.copy(selectedAccount = getAccount())
     }
 
     private fun getAccount(): SingleSignOnAccount? =
@@ -65,25 +60,7 @@ class LoginViewModel @Inject constructor(
             null
         }
 
-    fun onSsoClick() {
-        _uiState.update { it.copy(showAccountPicker = true) }
-    }
-
-    fun onAccountPickerDismiss(selectedAccount: SingleSignOnAccount?) =
-        _uiState.update {
-            it.copy(
-                selectedAccount = selectedAccount,
-                showAccountPicker = false
-            )
-        }
-
-    fun getSsoIntent() = AccountManager.newChooseAccountIntent(
-        null, null, ACCOUNT_TYPES,
-        null, "SSO", null, null
-    )
-
     companion object {
-        private val TAG = LoginViewModel::class.java.simpleName
-        private val ACCOUNT_TYPES = FilesAppType.entries.map { it.accountType }.toTypedArray()
+        private val TAG = TimelineViewModel::class.java.simpleName
     }
 }

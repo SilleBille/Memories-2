@@ -15,21 +15,23 @@ package com.mkd.memories.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import com.mkd.memories.login.navigation.LOGIN_ROUTE
+import com.mkd.memories.login.navigation.LoginRoute
 import com.mkd.memories.login.navigation.loginScreen
+import com.mkd.memories.timeline.navigation.navigateToTimeline
+import com.mkd.memories.timeline.navigation.timelineScreen
 import com.mkd.memories.ui.MemoriesAppState
 
 @Composable
 fun MemoriesNavHost(
     appState: MemoriesAppState,
-    startDestination: String = LOGIN_ROUTE,
 ) {
-    val navController = rememberNavController()
+    val navController = appState.navController
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = LoginRoute
     ) {
-        loginScreen()
+        loginScreen(onAccountSelected = navController::navigateToTimeline)
+
+        timelineScreen()
     }
 }

@@ -62,6 +62,7 @@ dependencies {
     implementation(projects.core.designsystem)
 
     implementation(projects.feature.login)
+    implementation(projects.feature.timeline)
 
     ksp(libs.hilt.compiler)
 

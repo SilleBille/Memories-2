@@ -28,16 +28,14 @@ import com.nextcloud.android.sso.helper.SingleAccountHelper
 import com.nextcloud.android.sso.model.FilesAppType
 import com.nextcloud.android.sso.model.SingleSignOnAccount
 import com.nextcloud.android.sso.ui.UiExceptionManager
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 
 /**
  * A Custom contract that fetches the request Auth token that can used with NextCloudAPI. This
  * contract requires the account name to be passed as input and returns an instance of
  * [SingleSignOnAccount]
  */
-class RequestAuthTokenContract @AssistedInject constructor(
-    @Assisted private val context: Context
+class RequestAuthTokenContract constructor(
+    private val context: Context
 ) : ActivityResultContract<String?, SingleSignOnAccount?>() {
 
     @Throws(NextcloudFilesAppAccountPermissionNotGrantedException::class)
@@ -46,11 +44,9 @@ class RequestAuthTokenContract @AssistedInject constructor(
             ?: throw NextcloudFilesAppAccountPermissionNotGrantedException(context)
         val componentName = FilesAppType.findByAccountType(account.type).packageId
         val authIntent = Intent()
-        authIntent.setComponent(
-            ComponentName(
-                componentName,
-                "com.owncloud.android.ui.activity.SsoGrantPermissionActivity"
-            )
+        authIntent.component = ComponentName(
+            componentName,
+            "com.owncloud.android.ui.activity.SsoGrantPermissionActivity"
         )
         authIntent.putExtra(NEXTCLOUD_FILES_ACCOUNT, account)
         return authIntent
@@ -58,12 +54,13 @@ class RequestAuthTokenContract @AssistedInject constructor(
 
     override fun parseResult(resultCode: Int, intent: Intent?): SingleSignOnAccount? {
         var ssoAccount: SingleSignOnAccount? = null
+
         if (resultCode == Activity.RESULT_OK) {
             AccountImporter.onActivityResult(
                 REQUEST_AUTH_TOKEN_SSO,
                 resultCode,
                 intent,
-                context as Activity // Context is from LocalContext.current, which is activity
+                context as Activity
             ) { account ->
                 // As this library supports multiple accounts we created some helper methods if you
                 // only want to use one. The following line stores the selected account as the

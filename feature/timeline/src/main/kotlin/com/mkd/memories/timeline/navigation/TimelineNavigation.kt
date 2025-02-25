@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 SilleBille
+ * Copyright 2025 SilleBille
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -11,22 +11,23 @@
  *
  */
 
-package com.mkd.memories.login.navigation
+package com.mkd.memories.timeline.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.mkd.memories.login.LoginRoute
+import com.mkd.memories.timeline.TimelineRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object LoginRoute
+data object TimelineRoute
 
-fun NavController.navigateToLogin(navOptions: NavOptions) = navigate(route = LoginRoute, navOptions)
+fun NavController.navigateToTimeline(navOptions: NavOptions? = null) =
+    navigate(route = TimelineRoute, navOptions)
 
-fun NavGraphBuilder.loginScreen(onAccountSelected: () -> Unit) {
-    composable<LoginRoute> {
-        LoginRoute(onAccountSelected = onAccountSelected)
+fun NavGraphBuilder.timelineScreen() {
+    composable<TimelineRoute> {
+        TimelineRoute()
     }
 }

@@ -21,7 +21,7 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
     repositories {
         google()
         mavenCentral()
@@ -38,3 +38,4 @@ include(":core:designsystem")
 include(":core:testing")
 
 include(":feature:login")
+include(":feature:timeline")
