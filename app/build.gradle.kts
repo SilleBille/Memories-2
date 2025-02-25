@@ -12,6 +12,7 @@
  */
 
 plugins {
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.memories.android.application)
     alias(libs.plugins.memories.android.application.compose)
     alias(libs.plugins.memories.android.application.jacoco)

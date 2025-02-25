@@ -37,6 +37,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         with(target) {
             apply(plugin = "memories.android.library")
             apply(plugin = "memories.hilt")
+            apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
             extensions.configure<LibraryExtension> {
                 testOptions.animationsDisabled = true
@@ -44,11 +45,13 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
             dependencies {
                 //add("implementation", project(":core:ui"))
-                add("implementation", project(":core:designsystem"))
+                "implementation"(project(":core:designsystem"))
 
-                add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
-                add("implementation", libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
-                add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
+                "implementation"(libs.findLibrary("androidx.hilt.navigation.compose").get())
+                "implementation"(libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
+                "implementation"(libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
+                "implementation"(libs.findLibrary("androidx.navigation.compose").get())
+                "implementation"(libs.findLibrary("kotlinx.serialization.json").get())
             }
         }
     }
