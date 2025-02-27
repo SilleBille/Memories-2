@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.navigation.compose)
 
+    implementation(projects.core.auth)
     implementation(projects.core.designsystem)
 
     implementation(projects.feature.login)

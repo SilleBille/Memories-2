@@ -13,15 +13,11 @@
 
 package com.mkd.memories.timeline
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException
-import com.nextcloud.android.sso.helper.SingleAccountHelper
+import com.mkd.memories.core.auth.util.User
 import com.nextcloud.android.sso.model.SingleSignOnAccount
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -40,7 +36,7 @@ data class TimelineUIState(
 
 @HiltViewModel
 class TimelineViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val user: User,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TimelineUIState.Initial)
@@ -49,18 +45,6 @@ class TimelineViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TimelineUIState.Initial)
 
     private fun initializeTimelineScreen() {
-        _uiState.value = _uiState.value.copy(selectedAccount = getAccount())
-    }
-
-    private fun getAccount(): SingleSignOnAccount? =
-        try {
-            SingleAccountHelper.getCurrentSingleSignOnAccount(context)
-        } catch (_: NoCurrentAccountSelectedException) {
-            Log.e(TAG, "No current Account Selected!!!")
-            null
-        }
-
-    companion object {
-        private val TAG = TimelineViewModel::class.java.simpleName
+        _uiState.value = _uiState.value.copy(selectedAccount = user.account)
     }
 }

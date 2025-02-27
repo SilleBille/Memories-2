@@ -41,7 +41,7 @@ import com.mkd.mkd.designsystem.theme.MemoriesTheme
 
 @Composable
 internal fun LoginRoute(
-    onAccountSelected: () -> Unit,
+    onUserLogIn: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -49,7 +49,7 @@ internal fun LoginRoute(
 
     val authTokenLauncher = rememberLauncherForActivityResult(RequestAuthTokenContract(context)) {
         Toast.makeText(context, "Account selected: ${it?.name}", Toast.LENGTH_SHORT).show()
-        viewModel.onAccountPickerDismiss(it)
+        viewModel.onAccountPickerDismiss(it != null)
     }
 
     val accountPickerLauncher =
@@ -63,14 +63,14 @@ internal fun LoginRoute(
                 }
 
                 Activity.RESULT_CANCELED -> {
-                    viewModel.onAccountPickerDismiss(null)
+                    viewModel.onAccountPickerDismiss(false)
                 }
             }
 
         }
 
-    LaunchedEffect(uiState.selectedAccount) {
-        uiState.selectedAccount?.let { onAccountSelected() }
+    LaunchedEffect(uiState.isUserLoggedIn) {
+        if(uiState.isUserLoggedIn) onUserLogIn()
     }
 
     LoginScreen(

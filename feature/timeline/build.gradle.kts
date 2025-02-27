@@ -11,6 +11,8 @@ android {
 dependencies {
     implementation(libs.nextcloud.sso)
 
+    implementation(projects.core.auth)
+
     testImplementation(libs.hilt.android.testing)
     testImplementation(projects.core.testing)
 

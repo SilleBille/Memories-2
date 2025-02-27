@@ -25,8 +25,8 @@ data object LoginRoute
 
 fun NavController.navigateToLogin(navOptions: NavOptions) = navigate(route = LoginRoute, navOptions)
 
-fun NavGraphBuilder.loginScreen(onAccountSelected: () -> Unit) {
+fun NavGraphBuilder.loginScreen(onUserLogIn: () -> Unit) {
     composable<LoginRoute> {
-        LoginRoute(onAccountSelected = onAccountSelected)
+        LoginRoute(onUserLogIn = onUserLogIn)
     }
 }

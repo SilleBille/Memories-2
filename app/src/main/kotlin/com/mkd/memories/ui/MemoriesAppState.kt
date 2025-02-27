@@ -26,13 +26,16 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun rememberMemoriesAppState(
     windowSizeClass: WindowSizeClass,
+    isUserLoggedIn: Boolean,
     navController: NavHostController = rememberNavController(),
 ): MemoriesAppState {
     return remember(
+        isUserLoggedIn,
         navController,
         windowSizeClass,
     ) {
         MemoriesAppState(
+            isUserLoggedIn = isUserLoggedIn,
             navController = navController,
             windowSizeClass = windowSizeClass
         )
@@ -40,6 +43,7 @@ fun rememberMemoriesAppState(
 }
 
 class MemoriesAppState(
+    val isUserLoggedIn: Boolean,
     val navController: NavHostController,
     val windowSizeClass: WindowSizeClass
 ) {
