@@ -11,39 +11,26 @@
  *
  */
 
-package com.mkd.memories.timeline
+package com.mkd.memories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mkd.memories.core.auth.util.User
-import com.nextcloud.android.sso.model.SingleSignOnAccount
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class TimelineUIState(
-    val selectedAccount: SingleSignOnAccount? = null,
-)
-
 @HiltViewModel
-class TimelineViewModel @Inject constructor(
-    private val user: User,
+class MainActivityViewModel @Inject constructor(
+    user: User,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(TimelineUIState())
-    val uiState = _uiState
-        .onStart { initializeTimelineScreen() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TimelineUIState())
+    val isUserSignedIn: StateFlow<Boolean> = user.isUserSignedIn.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = false
+    )
 
-    private fun initializeTimelineScreen() {
-        viewModelScope.launch {
-            user.account.collect {
-                _uiState.value = _uiState.value.copy(selectedAccount = it)
-            }
-        }
-    }
 }

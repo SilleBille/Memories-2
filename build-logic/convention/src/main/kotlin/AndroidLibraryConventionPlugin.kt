@@ -42,6 +42,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 disableUnnecessaryAndroidTests(target)
             }
             dependencies {
+                "implementation"(libs.findLibrary("androidx.lifecycle.runtimeKtx").get())
+
                 "testImplementation"(libs.findLibrary("kotlin.test").get())
             }
         }

@@ -23,21 +23,14 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 data class LoginUIState(
-    val showAccountPicker: Boolean,
-    val isUserLoggedIn: Boolean,
-) {
-    companion object {
-        val Initial = LoginUIState(
-            showAccountPicker = false,
-            isUserLoggedIn = false,
-        )
-    }
-}
+    val showAccountPicker: Boolean = false,
+    val isUserLoggedIn: Boolean = false,
+)
 
 @HiltViewModel
 class LoginViewModel @Inject constructor() : ViewModel() {
 
-    private val _uiState = MutableStateFlow(LoginUIState.Initial)
+    private val _uiState = MutableStateFlow(LoginUIState())
     val uiState = _uiState.asStateFlow()
 
     fun onSsoClick() {
