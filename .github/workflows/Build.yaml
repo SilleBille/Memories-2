@@ -67,7 +67,7 @@ jobs:
     timeout-minutes: 55
     strategy:
       matrix:
-        api-level: [26, 34] # min and current version
+        api-level: [26, 35] # min and current version
 
     steps:
       - name: Delete unnecessary tools 🔧
@@ -123,17 +123,17 @@ jobs:
           name: test-reports-${{ matrix.api-level }}
           path: '**/build/reports/androidTests'
 
-      - name: Run local tests for the combined coverage report (only API 34)
-        if: matrix.api-level == 34
+      - name: Run local tests for the combined coverage report (only API 35)
+        if: matrix.api-level == 35
         run: ./gradlew testDebugUnitTest
 
       # Add `createProdDebugUnitTestCoverageReport` if we ever add JVM tests for prod
-      - name: Generate coverage reports for Debug variants (only API 34)
-        if: matrix.api-level == 34
+      - name: Generate coverage reports for Debug variants (only API 35)
+        if: matrix.api-level == 35
         run: ./gradlew createDebugCombinedCoverageReport
 
-      - name: Display local test coverage on PR (only API 34)
-        if: matrix.api-level == 34
+      - name: Display local test coverage on PR (only API 35)
+        if: matrix.api-level == 35
         id: jacoco_reporter
         uses: madrapps/jacoco-report@v1.6.1
         with:
@@ -145,12 +145,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # Publish Coverage Job Summary  # Optional
-      - name: Add Coverage Job Summary (only API 34)
-        if: matrix.api-level == 34
+      - name: Add Coverage Job Summary (only API 35)
+        if: matrix.api-level == 35
         run: echo "${{ steps.jacoco_reporter.outputs.coverage-overall }}" >> $GITHUB_STEP_SUMMARY
 
-      - name: Upload local coverage reports (XML + HTML) (only API 34)
-        if: matrix.api-level == 34
+      - name: Upload local coverage reports (XML + HTML) (only API 35)
+        if: matrix.api-level == 35
         uses: actions/upload-artifact@v4
         with:
           name: coverage-reports
