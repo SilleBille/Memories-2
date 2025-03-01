@@ -11,7 +11,7 @@
  *
  */
 
-package com.mkd.mkd.designsystem.theme
+package com.mkd.memories.designsystem.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

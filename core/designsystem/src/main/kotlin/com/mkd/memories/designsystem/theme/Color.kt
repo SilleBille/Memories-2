@@ -11,7 +11,7 @@
  *
  */
 
-package com.mkd.mkd.designsystem.theme
+package com.mkd.memories.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
