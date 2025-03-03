@@ -11,23 +11,24 @@
  *
  */
 
-package com.mkd.memories.timeline.navigation
+plugins {
+    alias(libs.plugins.memories.android.library)
+    alias(libs.plugins.memories.android.library.jacoco)
+    alias(libs.plugins.memories.hilt)
+}
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
-import androidx.navigation.compose.composable
-import com.mkd.memories.timeline.TimelineRoute
-import kotlinx.serialization.Serializable
+android {
+    namespace = "com.mkd.memories.network"
+}
 
-@Serializable
-data object TimelineRoute
+dependencies {
+    api(projects.core.auth)
 
-fun NavController.navigateToTimeline(navOptions: NavOptions? = null) =
-    navigate(route = TimelineRoute, navOptions)
+    implementation(libs.coil.kt)
+    implementation(libs.gson)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.nextcloud.sso)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson.converter)
 
-fun NavGraphBuilder.timelineScreen() {
-    composable<TimelineRoute> {
-        TimelineRoute()
-    }
 }

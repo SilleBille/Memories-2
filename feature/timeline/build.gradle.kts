@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.nextcloud.sso)
 
     implementation(projects.core.auth)
+    implementation(projects.core.network)
 
     testImplementation(libs.hilt.android.testing)
     testImplementation(projects.core.testing)

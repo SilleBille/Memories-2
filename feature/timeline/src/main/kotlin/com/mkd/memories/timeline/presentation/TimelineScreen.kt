@@ -11,7 +11,7 @@
  *
  */
 
-package com.mkd.memories.timeline
+package com.mkd.memories.timeline.presentation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Text
@@ -28,9 +28,9 @@ internal fun TimelineRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    uiState.selectedAccount?.let { account ->
-        TimelineScreen(name = account.name)
-    }
+    TimelineScreen(
+        name = uiState.baseUrl,
+    )
 
 }
 

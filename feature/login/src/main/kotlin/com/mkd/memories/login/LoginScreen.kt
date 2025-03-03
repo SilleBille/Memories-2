@@ -15,7 +15,6 @@ package com.mkd.memories.login
 
 import android.accounts.AccountManager
 import android.app.Activity
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mkd.memories.core.auth.util.RequestAuthTokenContract
-import com.mkd.mkd.designsystem.theme.MemoriesTheme
+import com.mkd.memories.designsystem.theme.MemoriesTheme
 
 @Composable
 internal fun LoginRoute(
@@ -48,7 +47,6 @@ internal fun LoginRoute(
     val context = LocalContext.current
 
     val authTokenLauncher = rememberLauncherForActivityResult(RequestAuthTokenContract(context)) {
-        Toast.makeText(context, "Account selected: ${it?.name}", Toast.LENGTH_SHORT).show()
         viewModel.onAccountPickerDismiss(it != null)
     }
 
@@ -70,7 +68,7 @@ internal fun LoginRoute(
         }
 
     LaunchedEffect(uiState.isUserLoggedIn) {
-        if(uiState.isUserLoggedIn) onUserLogIn()
+        if (uiState.isUserLoggedIn) onUserLogIn()
     }
 
     LoginScreen(

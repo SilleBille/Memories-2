@@ -11,27 +11,27 @@
  *
  */
 
-package com.mkd.memories.timeline
+package com.mkd.memories.timeline.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mkd.memories.core.auth.util.User
-import com.nextcloud.android.sso.model.SingleSignOnAccount
+import com.mkd.memories.timeline.data.TimelineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class TimelineUIState(
-    val selectedAccount: SingleSignOnAccount? = null,
+    val baseUrl: String = "",
 )
 
 @HiltViewModel
 class TimelineViewModel @Inject constructor(
-    private val user: User,
+    private val timelineRepository: TimelineRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TimelineUIState())
@@ -41,8 +41,8 @@ class TimelineViewModel @Inject constructor(
 
     private fun initializeTimelineScreen() {
         viewModelScope.launch {
-            user.account.collect {
-                _uiState.value = _uiState.value.copy(selectedAccount = it)
+            timelineRepository.getDays().joinToString().run {
+                _uiState.update { it.copy(baseUrl = this) }
             }
         }
     }

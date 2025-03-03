@@ -18,9 +18,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.mkd.memories.login.navigation.LoginRoute
 import com.mkd.memories.login.navigation.loginScreen
-import com.mkd.memories.timeline.navigation.TimelineRoute
-import com.mkd.memories.timeline.navigation.navigateToTimeline
-import com.mkd.memories.timeline.navigation.timelineScreen
+import com.mkd.memories.timeline.presentation.navigation.TimelineRoute
+import com.mkd.memories.timeline.presentation.navigation.navigateToTimeline
+import com.mkd.memories.timeline.presentation.navigation.timelineScreen
 import com.mkd.memories.ui.MemoriesAppState
 
 @Composable

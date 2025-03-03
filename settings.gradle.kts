@@ -39,3 +39,4 @@ include(":core:testing")
 
 include(":feature:login")
 include(":feature:timeline")
+include(":core:network")

@@ -15,7 +15,7 @@ import androidx.navigation.navOptions
 import com.mkd.memories.login.navigation.navigateToLogin
 import com.mkd.memories.ui.MemoriesApp
 import com.mkd.memories.ui.rememberMemoriesAppState
-import com.mkd.mkd.designsystem.theme.MemoriesTheme
+import com.mkd.memories.designsystem.theme.MemoriesTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
