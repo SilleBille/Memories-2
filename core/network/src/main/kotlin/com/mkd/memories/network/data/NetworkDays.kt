@@ -16,7 +16,7 @@ package com.mkd.memories.network.data
 import com.google.gson.annotations.SerializedName
 
 /**
- * Network representation of [] when fetched from /newsresources
+ * Network representation of list of days when fetched from /days
  */
 data class NetworkDays(
     @SerializedName("dayid") val dayId: Long,

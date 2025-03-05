@@ -11,16 +11,25 @@
  *
  */
 
-package com.mkd.memories.timeline.data
+package com.mkd.memories.network.data
 
-import com.mkd.memories.network.data.NetworkDays
+import com.google.gson.annotations.SerializedName
 
 /**
- * Class summarizing Days and number of photos taken on that day.
+ * Network representation of list of media info when fetched from /days/<dayid>
  */
-data class Days(
-    val dayId: Long,
-    val count: Long,
+data class NetworkDayContents(
+    val fileid: Long,
+    val dayid: Long,
+    val w: Long,
+    val h: Long,
+    val liveid: String?,
+    val etag: String,
+    val basename: String,
+    val epoch: Long,
+    val mimetype: String,
+    val buid: String,
+    val auid: String,
+    val isvideo: Int?,
+    @SerializedName("video_duration") val videoDuration: Long?,
 )
-
-fun List<NetworkDays>.parse() = map { Days(dayId = it.dayId, count = it.count) }

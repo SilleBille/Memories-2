@@ -15,4 +15,7 @@ package com.mkd.memories.timeline.data
 
 interface TimelineRepository {
     suspend fun getDays(): List<Days>
+
+    suspend fun getDayContents(dayIds: List<Long>): List<DayContents>
+
 }

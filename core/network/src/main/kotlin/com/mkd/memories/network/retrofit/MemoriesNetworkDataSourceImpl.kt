@@ -18,6 +18,7 @@ import com.google.gson.Gson
 import com.mkd.memories.core.auth.util.User
 import com.mkd.memories.core.auth.util.UserAccount
 import com.mkd.memories.network.MemoriesNetworkDataSource
+import com.mkd.memories.network.data.NetworkDayContents
 import com.mkd.memories.network.data.NetworkDays
 import com.nextcloud.android.sso.api.NextcloudAPI
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 import retrofit2.NextcloudRetrofitApiBuilder
 import retrofit2.http.GET
+import retrofit2.http.Path
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -37,6 +39,11 @@ import javax.inject.Singleton
 private interface RetrofitMemoriesNetworkApi {
     @GET(value = "/days")
     fun getDays(): List<NetworkDays>
+
+    @GET(value = "/days/{ids}")
+    fun getDayContents(
+        @Path(value = "ids") ids: String
+    ): List<NetworkDayContents>
 }
 
 /**
@@ -68,4 +75,7 @@ internal class MemoriesNetworkDataSourceImpl @Inject constructor(
     private suspend fun getNetworkApi() = networkApi.first()
 
     override suspend fun getDays(): List<NetworkDays> = getNetworkApi().getDays()
+
+    override suspend fun getDayContents(dayIds: List<Long>): List<NetworkDayContents> =
+        getNetworkApi().getDayContents(dayIds.joinToString(","))
 }

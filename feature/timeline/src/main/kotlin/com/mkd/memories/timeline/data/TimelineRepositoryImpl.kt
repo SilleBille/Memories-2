@@ -21,7 +21,11 @@ import javax.inject.Inject
 class TimelineRepositoryImpl @Inject constructor(
     private val networkDataSource: MemoriesNetworkDataSource
 ) : TimelineRepository {
-    override suspend fun getDays(): List<Days> = withContext(Dispatchers.IO) {
-        networkDataSource.getDays().parse()
+    override suspend fun getDays() = withContext(Dispatchers.IO) {
+        networkDataSource.getDays().parseDays()
+    }
+
+    override suspend fun getDayContents(dayIds: List<Long>) = withContext(Dispatchers.IO) {
+        networkDataSource.getDayContents(dayIds).parseDayContents()
     }
 }

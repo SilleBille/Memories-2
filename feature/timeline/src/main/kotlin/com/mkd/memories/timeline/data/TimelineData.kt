@@ -11,22 +11,35 @@
  *
  */
 
-package com.mkd.memories.network
+package com.mkd.memories.timeline.data
 
 import com.mkd.memories.network.data.NetworkDayContents
 import com.mkd.memories.network.data.NetworkDays
 
 /**
- * Interface representing network calls to the Nextcloud backed
+ * Class summarizing Days and number of photos taken on that day.
  */
-interface MemoriesNetworkDataSource {
-    /**
-     * Fetch all available days. This fill fetch DayID and count of media in the day
-     */
-    suspend fun getDays(): List<NetworkDays>
+data class Days(
+    val dayId: Long,
+    val count: Long,
+)
 
-    /**
-     * Fetch all available media for the given list of DayIds
-     */
-    suspend fun getDayContents(dayIds: List<Long>): List<NetworkDayContents>
+fun List<NetworkDays>.parseDays() = map { Days(dayId = it.dayId, count = it.count) }
+
+data class DayContents(
+    val fileId: Long,
+    val dayId: Long,
+    val fileName: String,
+    val epoch: Long,
+    val mimetype: String,
+)
+
+fun List<NetworkDayContents>.parseDayContents() = map {
+    DayContents(
+        fileId = it.fileid,
+        dayId = it.dayid,
+        fileName = it.basename,
+        epoch = it.epoch,
+        mimetype = it.mimetype
+    )
 }
