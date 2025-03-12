@@ -20,10 +20,6 @@ import com.mkd.memories.network.RetrofitNetworkDataSource
 import com.nextcloud.android.sso.api.NextcloudAPI
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import retrofit2.NextcloudRetrofitApiBuilder
 import retrofit2.http.GET
@@ -59,22 +55,18 @@ internal class RetrofitNetworkDataSourceImpl @Inject constructor(
     user: User,
 ) : RetrofitNetworkDataSource {
 
-    private val networkApi: Flow<RetrofitMemoriesNetworkApi> =
-        user.nextCloudAccount
-            .filterNotNull()
-            .map { ssoAccount ->
-                val nextCloudApi = NextcloudAPI(appContext, ssoAccount, gson)
-                NextcloudRetrofitApiBuilder(nextCloudApi, BASE_PATH)
-                    .create(RetrofitMemoriesNetworkApi::class.java)
-            }
+    private val ssoAccount = user.ncSsoAccount
+    private val nextcloudApi = ssoAccount?.let { NextcloudAPI(appContext, ssoAccount, gson) }
+    private val networkApi = nextcloudApi?.let {
+        NextcloudRetrofitApiBuilder(it, BASE_PATH)
+            .create(RetrofitMemoriesNetworkApi::class.java)
+    }
 
-    private suspend fun getNetworkApi() = networkApi.first()
-
-    override suspend fun getDays(): List<NetworkDays> = withContext(Dispatchers.IO) {
-        getNetworkApi().getDays()
+    override suspend fun getDays() = withContext(Dispatchers.IO) {
+        networkApi?.getDays() ?: emptyList()
     }
 
     override suspend fun getDayContents(dayIds: List<Long>) = withContext(Dispatchers.IO) {
-        getNetworkApi().getDayContents(dayIds.joinToString(","))
+        networkApi?.getDayContents(dayIds.joinToString(",")) ?: emptyList()
     }
 }

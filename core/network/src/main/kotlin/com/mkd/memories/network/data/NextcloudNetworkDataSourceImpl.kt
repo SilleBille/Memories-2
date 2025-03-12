@@ -22,31 +22,30 @@ import com.nextcloud.android.sso.aidl.NextcloudRequest
 import com.nextcloud.android.sso.api.NextcloudAPI
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class NextcloudNetworkDataSourceImpl @Inject constructor(
     @ApplicationContext private val appContext: Context,
+    user: User,
     private val gson: Gson,
-    private val user: User,
     private val multiPreviewProcessor: MultiPreviewProcessor,
 ) : NextcloudNetworkDataSource {
 
-    private suspend fun getCustomNetworkApi(requestBody: NetworkMultiPreviewRequest): List<Preview> {
-        val ssoAccount = user.nextCloudAccount.filterNotNull().first()
+    private val ssoAccount = user.ncSsoAccount
+    private val nextcloudApi = ssoAccount?.let { NextcloudAPI(appContext, it, gson) }
 
-        val nextCloudApi = NextcloudAPI(appContext, ssoAccount, gson)
+
+    private fun getCustomNetworkApi(requestBody: NetworkMultiPreviewRequest): List<Preview> {
 
         val nextCloudRequest = NextcloudRequest.Builder()
             .setMethod("POST")
             .setRequestBody(gson.toJson(requestBody))
             .setUrl("$BASE_PATH/image/multipreview")
             .build()
-        val response = nextCloudApi.performNetworkRequestV2(nextCloudRequest)
+        val response = nextcloudApi?.performNetworkRequestV2(nextCloudRequest)
 
-        return multiPreviewProcessor.parse(response.body)
+        return response?.body?.let { multiPreviewProcessor.parse((it)) } ?: emptyList()
     }
 
     override suspend fun getMultiPreview(fileIds: List<Long>): List<Preview> =

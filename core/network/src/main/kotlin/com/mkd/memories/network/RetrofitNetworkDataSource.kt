@@ -29,5 +29,4 @@ interface RetrofitNetworkDataSource {
      * Fetch all available media for the given list of DayIds
      */
     suspend fun getDayContents(dayIds: List<Long>): List<NetworkDayContents>
-
 }
