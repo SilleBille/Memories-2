@@ -17,9 +17,9 @@ import com.mkd.memories.network.data.NetworkDayContents
 import com.mkd.memories.network.data.NetworkDays
 
 /**
- * Interface representing network calls to the Nextcloud backed
+ * Interface representing network calls to the Nextcloud backend using Retrofit
  */
-interface MemoriesNetworkDataSource {
+interface RetrofitNetworkDataSource {
     /**
      * Fetch all available days. This fill fetch DayID and count of media in the day
      */
@@ -29,4 +29,5 @@ interface MemoriesNetworkDataSource {
      * Fetch all available media for the given list of DayIds
      */
     suspend fun getDayContents(dayIds: List<Long>): List<NetworkDayContents>
+
 }

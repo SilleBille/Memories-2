@@ -13,8 +13,10 @@
 
 package com.mkd.memories.network.di
 
-import com.mkd.memories.network.MemoriesNetworkDataSource
-import com.mkd.memories.network.retrofit.MemoriesNetworkDataSourceImpl
+import com.mkd.memories.network.NextcloudNetworkDataSource
+import com.mkd.memories.network.RetrofitNetworkDataSource
+import com.mkd.memories.network.data.NextcloudNetworkDataSourceImpl
+import com.mkd.memories.network.data.RetrofitNetworkDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -25,5 +27,8 @@ import dagger.hilt.components.SingletonComponent
 internal interface NetworkModule {
 
     @Binds
-    fun binds(impl: MemoriesNetworkDataSourceImpl): MemoriesNetworkDataSource
+    fun bindsRetrofitNetworkDataSource(impl: RetrofitNetworkDataSourceImpl): RetrofitNetworkDataSource
+
+    @Binds
+    fun bindsNextcloudNetworkDataSource(impl: NextcloudNetworkDataSourceImpl): NextcloudNetworkDataSource
 }

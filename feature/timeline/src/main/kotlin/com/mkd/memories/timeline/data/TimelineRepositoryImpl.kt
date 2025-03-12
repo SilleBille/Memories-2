@@ -13,19 +13,23 @@
 
 package com.mkd.memories.timeline.data
 
-import com.mkd.memories.network.MemoriesNetworkDataSource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.mkd.memories.network.NextcloudNetworkDataSource
+import com.mkd.memories.network.RetrofitNetworkDataSource
+import com.mkd.memories.network.data.Preview
 import javax.inject.Inject
 
 class TimelineRepositoryImpl @Inject constructor(
-    private val networkDataSource: MemoriesNetworkDataSource
+    private val retrofitDatasource: RetrofitNetworkDataSource,
+    private val nextcloudNetworkDataSource: NextcloudNetworkDataSource,
 ) : TimelineRepository {
-    override suspend fun getDays() = withContext(Dispatchers.IO) {
-        networkDataSource.getDays().parseDays()
-    }
+    override suspend fun getDays() = retrofitDatasource.getDays().parseDays()
 
-    override suspend fun getDayContents(dayIds: List<Long>) = withContext(Dispatchers.IO) {
-        networkDataSource.getDayContents(dayIds).parseDayContents()
-    }
+
+    override suspend fun getDayContents(dayIds: List<Long>) =
+        retrofitDatasource.getDayContents(dayIds).parseDayContents()
+
+
+    override suspend fun getMultiPreview(fileIds: List<Long>): List<Preview> =
+        nextcloudNetworkDataSource.getMultiPreview(fileIds)
+
 }

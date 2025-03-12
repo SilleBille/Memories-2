@@ -9,6 +9,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.coil.kt.compose)
     implementation(libs.nextcloud.sso)
 
     implementation(projects.core.auth)

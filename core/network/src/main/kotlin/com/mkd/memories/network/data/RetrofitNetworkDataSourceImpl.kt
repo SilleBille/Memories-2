@@ -11,22 +11,20 @@
  *
  */
 
-package com.mkd.memories.network.retrofit
+package com.mkd.memories.network.data
 
 import android.content.Context
 import com.google.gson.Gson
 import com.mkd.memories.core.auth.util.User
-import com.mkd.memories.core.auth.util.UserAccount
-import com.mkd.memories.network.MemoriesNetworkDataSource
-import com.mkd.memories.network.data.NetworkDayContents
-import com.mkd.memories.network.data.NetworkDays
+import com.mkd.memories.network.RetrofitNetworkDataSource
 import com.nextcloud.android.sso.api.NextcloudAPI
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.Serializable
+import kotlinx.coroutines.withContext
 import retrofit2.NextcloudRetrofitApiBuilder
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -34,7 +32,15 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Retrofit API declaration for Memories Network API
+ * Base URL for the Nextcloud Memories API
+ */
+internal const val BASE_PATH = "/apps/memories/api"
+
+/**
+ * Retrofit API declaration for Memories Network API. Note that, these APIs cannot be marked as
+ * suspend due to the lack of Nextcloud SSO support.
+ *
+ * @see <a href="https://github.com/nextcloud/Android-SingleSignOn/issues/177">Nextcloud SSO issue #177</a>
  */
 private interface RetrofitMemoriesNetworkApi {
     @GET(value = "/days")
@@ -46,22 +52,13 @@ private interface RetrofitMemoriesNetworkApi {
     ): List<NetworkDayContents>
 }
 
-/**
- * Wrapper for data provided from the selected [UserAccount.url]
- */
-@Serializable
-private data class NetworkResponse<T>(
-    val data: T,
-)
-
-private const val BASE_PATH = "/apps/memories/api"
-
 @Singleton
-internal class MemoriesNetworkDataSourceImpl @Inject constructor(
+internal class RetrofitNetworkDataSourceImpl @Inject constructor(
     @ApplicationContext private val appContext: Context,
     private val gson: Gson,
     user: User,
-) : MemoriesNetworkDataSource {
+) : RetrofitNetworkDataSource {
+
     private val networkApi: Flow<RetrofitMemoriesNetworkApi> =
         user.nextCloudAccount
             .filterNotNull()
@@ -71,11 +68,13 @@ internal class MemoriesNetworkDataSourceImpl @Inject constructor(
                     .create(RetrofitMemoriesNetworkApi::class.java)
             }
 
-
     private suspend fun getNetworkApi() = networkApi.first()
 
-    override suspend fun getDays(): List<NetworkDays> = getNetworkApi().getDays()
+    override suspend fun getDays(): List<NetworkDays> = withContext(Dispatchers.IO) {
+        getNetworkApi().getDays()
+    }
 
-    override suspend fun getDayContents(dayIds: List<Long>): List<NetworkDayContents> =
+    override suspend fun getDayContents(dayIds: List<Long>) = withContext(Dispatchers.IO) {
         getNetworkApi().getDayContents(dayIds.joinToString(","))
+    }
 }

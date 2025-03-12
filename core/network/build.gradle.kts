@@ -24,7 +24,6 @@ android {
 dependencies {
     api(projects.core.auth)
 
-    implementation(libs.coil.kt)
     implementation(libs.gson)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.nextcloud.sso)

@@ -11,14 +11,21 @@
  *
  */
 
-package com.mkd.memories.timeline.data
+package com.mkd.memories.network
 
 import com.mkd.memories.network.data.Preview
 
-interface TimelineRepository {
-    suspend fun getDays(): List<Days>
+/**
+ * Interface representing network calls to the Nextcloud backend using [com.nextcloud.android.sso.aidl.NextcloudRequest.Builder]
+ */
+interface NextcloudNetworkDataSource {
 
-    suspend fun getDayContents(dayIds: List<Long>): List<DayContents>
-
+    /**
+     * Get previews for a list of provided fileIds
+     *
+     * @param fileIds list of fileIds to fetch previews for
+     *
+     * @return list of [Preview]s
+     */
     suspend fun getMultiPreview(fileIds: List<Long>): List<Preview>
 }
