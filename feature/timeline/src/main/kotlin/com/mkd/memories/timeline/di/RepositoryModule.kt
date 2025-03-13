@@ -23,8 +23,7 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 internal interface RepositoryModule {
+
     @Binds
-    fun bindsUserNewsResourceRepository(
-        timelineRepository: TimelineRepositoryImpl,
-    ): TimelineRepository
+    fun bindsUserNewsResourceRepository(timelineRepository: TimelineRepositoryImpl): TimelineRepository
 }

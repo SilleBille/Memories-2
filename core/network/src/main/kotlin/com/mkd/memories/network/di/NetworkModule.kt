@@ -13,14 +13,19 @@
 
 package com.mkd.memories.network.di
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.Strictness
 import com.mkd.memories.network.NextcloudNetworkDataSource
 import com.mkd.memories.network.RetrofitNetworkDataSource
 import com.mkd.memories.network.data.NextcloudNetworkDataSourceImpl
 import com.mkd.memories.network.data.RetrofitNetworkDataSourceImpl
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -31,4 +36,10 @@ internal interface NetworkModule {
 
     @Binds
     fun bindsNextcloudNetworkDataSource(impl: NextcloudNetworkDataSourceImpl): NextcloudNetworkDataSource
+
+    companion object {
+        @Provides
+        @Singleton
+        fun providesNetworkGson(): Gson = GsonBuilder().setStrictness(Strictness.LENIENT).create()
+    }
 }

@@ -37,7 +37,6 @@ class User @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
-
     private val ncSsoAccountFlow: Flow<SingleSignOnAccount?> = try {
         SingleAccountHelper.`getCurrentSingleSignOnAccount$`(context)
             .asFlow()
