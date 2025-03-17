@@ -13,8 +13,11 @@
 
 package com.mkd.memories.timeline.data
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.mkd.memories.network.data.NetworkDayContents
 import com.mkd.memories.network.data.NetworkDays
+import com.mkd.memories.network.data.NetworkPreviewResponse
 
 /**
  * Class summarizing Days and number of photos taken on that day.
@@ -41,5 +44,30 @@ fun List<NetworkDayContents>.parseDayContents() = map {
         fileName = it.basename,
         epoch = it.epoch,
         mimetype = it.mimetype
+    )
+}
+
+data class Preview(
+    //val fileId: Long,
+    val preview: Bitmap,
+    val mimeType: MimeType,
+)
+
+enum class MimeType {
+    PHOTO,
+    MOTION_PHOTO,
+    VIDEO,
+    UNKNOWN,
+}
+
+fun List<NetworkPreviewResponse>.parsePreview() = map {
+    Preview(
+        preview = BitmapFactory.decodeByteArray(it.imageData, 0, it.imageData.size),
+        mimeType = when (it.mimeType) {
+            "image/jpeg" -> MimeType.PHOTO
+            "image/mov" -> MimeType.MOTION_PHOTO
+            "video/mp4" -> MimeType.VIDEO
+            else -> MimeType.UNKNOWN
+        }
     )
 }

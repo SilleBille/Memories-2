@@ -104,6 +104,7 @@ fun MemoriesTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
+        typography = MemoriesTypography,
         content = content
     )
 }

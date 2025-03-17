@@ -14,7 +14,7 @@
 package com.mkd.memories.network.models
 
 import com.google.gson.Gson
-import com.mkd.memories.network.data.Preview
+import com.mkd.memories.network.data.NetworkPreviewResponse
 import java.io.InputStream
 import javax.inject.Inject
 import kotlin.jvm.java
@@ -26,10 +26,10 @@ class MultiPreviewProcessor @Inject constructor(
     val gson: Gson,
 ) {
     /**
-     * Parse a multipreview response from an InputStream into a list of Preview objects
+     * Parse a multipreview response from an InputStream into a list of NetworkPreviewResponse objects
      */
-    fun parse(inputStream: InputStream): List<Preview> {
-        val previews = mutableListOf<Preview>()
+    fun parse(inputStream: InputStream): List<NetworkPreviewResponse> {
+        val networkPreviewResponses = mutableListOf<NetworkPreviewResponse>()
 
         try {
             while (true) {
@@ -46,7 +46,7 @@ class MultiPreviewProcessor @Inject constructor(
 
                 // Parse the JSON header
                 val jsonStr = String(jsonBytes)
-                val headerMap = gson.fromJson(jsonStr, Preview::class.java)
+                val headerMap = gson.fromJson(jsonStr, NetworkPreviewResponse::class.java)
 
 
                 // Read the image data
@@ -62,8 +62,8 @@ class MultiPreviewProcessor @Inject constructor(
                 if (totalRead != headerMap.contentLength) break // Error reading
 
                 // Add the preview to the list
-                previews.add(
-                    Preview(
+                networkPreviewResponses.add(
+                    NetworkPreviewResponse(
                         headerMap.requestId,
                         headerMap.contentLength,
                         headerMap.mimeType,
@@ -74,6 +74,6 @@ class MultiPreviewProcessor @Inject constructor(
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return previews
+        return networkPreviewResponses
     }
 }

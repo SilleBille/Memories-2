@@ -36,7 +36,7 @@ class NextcloudNetworkDataSourceImpl @Inject constructor(
     private val nextcloudApi = ssoAccount?.let { NextcloudAPI(appContext, it, gson) }
 
 
-    private fun getCustomNetworkApi(requestBody: NetworkMultiPreviewRequest): List<Preview> {
+    private fun getCustomNetworkApi(requestBody: NetworkMultiPreviewRequest): List<NetworkPreviewResponse> {
 
         val nextCloudRequest = NextcloudRequest.Builder()
             .setMethod("POST")
@@ -48,7 +48,7 @@ class NextcloudNetworkDataSourceImpl @Inject constructor(
         return response?.body?.let { multiPreviewProcessor.parse((it)) } ?: emptyList()
     }
 
-    override suspend fun getMultiPreview(fileIds: List<Long>): List<Preview> =
+    override suspend fun getMultiPreview(fileIds: List<Long>): List<NetworkPreviewResponse> =
         withContext(Dispatchers.IO) {
             val request = NetworkMultiPreviewRequest(
                 fileIds.map {

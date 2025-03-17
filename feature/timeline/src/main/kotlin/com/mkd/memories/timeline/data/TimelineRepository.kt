@@ -13,8 +13,6 @@
 
 package com.mkd.memories.timeline.data
 
-import com.mkd.memories.network.data.Preview
-
 interface TimelineRepository {
     suspend fun getDays(): List<Days>
 

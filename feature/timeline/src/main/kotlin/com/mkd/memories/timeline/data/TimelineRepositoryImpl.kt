@@ -15,7 +15,6 @@ package com.mkd.memories.timeline.data
 
 import com.mkd.memories.network.NextcloudNetworkDataSource
 import com.mkd.memories.network.RetrofitNetworkDataSource
-import com.mkd.memories.network.data.Preview
 import javax.inject.Inject
 
 class TimelineRepositoryImpl @Inject constructor(
@@ -30,6 +29,6 @@ class TimelineRepositoryImpl @Inject constructor(
 
 
     override suspend fun getMultiPreview(fileIds: List<Long>): List<Preview> =
-        nextcloudNetworkDataSource.getMultiPreview(fileIds)
+        nextcloudNetworkDataSource.getMultiPreview(fileIds).parsePreview()
 
 }

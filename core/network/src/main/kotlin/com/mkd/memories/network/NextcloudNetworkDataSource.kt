@@ -13,7 +13,7 @@
 
 package com.mkd.memories.network
 
-import com.mkd.memories.network.data.Preview
+import com.mkd.memories.network.data.NetworkPreviewResponse
 
 /**
  * Interface representing network calls to the Nextcloud backend using [com.nextcloud.android.sso.aidl.NextcloudRequest.Builder]
@@ -25,7 +25,7 @@ interface NextcloudNetworkDataSource {
      *
      * @param fileIds list of fileIds to fetch previews for
      *
-     * @return list of [Preview]s
+     * @return list of [NetworkPreviewResponse]s
      */
-    suspend fun getMultiPreview(fileIds: List<Long>): List<Preview>
+    suspend fun getMultiPreview(fileIds: List<Long>): List<NetworkPreviewResponse>
 }
