@@ -13,37 +13,29 @@
 
 package com.mkd.memories.network.data
 
-import android.content.Context
-import com.google.gson.Gson
-import com.mkd.memories.core.auth.util.User
 import com.mkd.memories.network.NextcloudNetworkDataSource
+import com.mkd.memories.network.factory.NextcloudRequestFactory
 import com.mkd.memories.network.models.MultiPreviewProcessor
-import com.nextcloud.android.sso.aidl.NextcloudRequest
 import com.nextcloud.android.sso.api.NextcloudAPI
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class NextcloudNetworkDataSourceImpl @Inject constructor(
-    @ApplicationContext private val appContext: Context,
-    user: User,
-    private val gson: Gson,
+    private val nextcloudApi: NextcloudAPI,
+    private val nextcloudRequestFactory: NextcloudRequestFactory,
     private val multiPreviewProcessor: MultiPreviewProcessor,
 ) : NextcloudNetworkDataSource {
-
-    private val ssoAccount = user.ncSsoAccount
-    private val nextcloudApi = ssoAccount?.let { NextcloudAPI(appContext, it, gson) }
 
 
     private fun getCustomNetworkApi(requestBody: NetworkMultiPreviewRequest): List<NetworkPreviewResponse> {
 
-        val nextCloudRequest = NextcloudRequest.Builder()
-            .setMethod("POST")
-            .setRequestBody(gson.toJson(requestBody))
-            .setUrl("$BASE_PATH/image/multipreview")
-            .build()
-        val response = nextcloudApi?.performNetworkRequestV2(nextCloudRequest)
+        val nextcloudRequest = nextcloudRequestFactory.create(
+            method = "POST",
+            requestBody = requestBody,
+            endpoint = "/image/multipreview"
+        )
+        val response = nextcloudApi.performNetworkRequestV2(nextcloudRequest)
 
         return response?.body?.let { multiPreviewProcessor.parse((it)) } ?: emptyList()
     }

@@ -13,24 +13,14 @@
 
 package com.mkd.memories.network.data
 
-import android.content.Context
-import com.google.gson.Gson
-import com.mkd.memories.core.auth.util.User
 import com.mkd.memories.network.RetrofitNetworkDataSource
-import com.nextcloud.android.sso.api.NextcloudAPI
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.mkd.memories.network.factory.RetrofitApiFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.NextcloudRetrofitApiBuilder
 import retrofit2.http.GET
 import retrofit2.http.Path
 import javax.inject.Inject
 import javax.inject.Singleton
-
-/**
- * Base URL for the Nextcloud Memories API
- */
-internal const val BASE_PATH = "/apps/memories/api"
 
 /**
  * Retrofit API declaration for Memories Network API. Note that, these APIs cannot be marked as
@@ -50,23 +40,17 @@ private interface RetrofitMemoriesNetworkApi {
 
 @Singleton
 internal class RetrofitNetworkDataSourceImpl @Inject constructor(
-    @ApplicationContext private val appContext: Context,
-    private val gson: Gson,
-    user: User,
+    retrofitApiFactory: RetrofitApiFactory,
 ) : RetrofitNetworkDataSource {
 
-    private val ssoAccount = user.ncSsoAccount
-    private val nextcloudApi = ssoAccount?.let { NextcloudAPI(appContext, ssoAccount, gson) }
-    private val networkApi = nextcloudApi?.let {
-        NextcloudRetrofitApiBuilder(it, BASE_PATH)
-            .create(RetrofitMemoriesNetworkApi::class.java)
-    }
+    private val networkApi = retrofitApiFactory
+        .create(RetrofitMemoriesNetworkApi::class.java)
 
     override suspend fun getDays() = withContext(Dispatchers.IO) {
-        networkApi?.getDays() ?: emptyList()
+        networkApi.getDays()
     }
 
     override suspend fun getDayContents(dayIds: List<Long>) = withContext(Dispatchers.IO) {
-        networkApi?.getDayContents(dayIds.joinToString(",")) ?: emptyList()
+        networkApi.getDayContents(dayIds.joinToString(","))
     }
 }

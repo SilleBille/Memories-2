@@ -13,17 +13,21 @@
 
 package com.mkd.memories.network.di
 
+import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
+import com.mkd.memories.core.auth.util.User
 import com.mkd.memories.network.NextcloudNetworkDataSource
 import com.mkd.memories.network.RetrofitNetworkDataSource
 import com.mkd.memories.network.data.NextcloudNetworkDataSourceImpl
 import com.mkd.memories.network.data.RetrofitNetworkDataSourceImpl
+import com.nextcloud.android.sso.api.NextcloudAPI
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -41,5 +45,20 @@ internal interface NetworkModule {
         @Provides
         @Singleton
         fun providesNetworkGson(): Gson = GsonBuilder().setStrictness(Strictness.LENIENT).create()
+
+        @Provides
+        @Singleton
+        fun providesNextcloudApi(
+            user: User,
+            @ApplicationContext appContext: Context,
+            gson: Gson,
+        ): NextcloudAPI {
+            // Check if the user is signed in and has a valid Nextcloud SSO account.
+            val ncSsoAccount = user.ncSsoAccount
+                ?: throw IllegalAccessException("User is not signed in or does not have a Nextcloud SSO account.")
+
+            // Attempt to create a NextcloudAPI instance.
+            return NextcloudAPI(appContext, ncSsoAccount, gson)
+        }
     }
 }
