@@ -21,11 +21,11 @@ import androidx.activity.result.contract.ActivityResultContract
 import com.nextcloud.android.sso.AccountImporter
 import com.nextcloud.android.sso.AccountImporter.REQUEST_AUTH_TOKEN_SSO
 import com.nextcloud.android.sso.Constants.NEXTCLOUD_FILES_ACCOUNT
+import com.nextcloud.android.sso.FilesAppTypeRegistry
 import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountNotFoundException
 import com.nextcloud.android.sso.exceptions.NextcloudFilesAppAccountPermissionNotGrantedException
 import com.nextcloud.android.sso.exceptions.NoCurrentAccountSelectedException
 import com.nextcloud.android.sso.helper.SingleAccountHelper
-import com.nextcloud.android.sso.model.FilesAppType
 import com.nextcloud.android.sso.model.SingleSignOnAccount
 import com.nextcloud.android.sso.ui.UiExceptionManager
 
@@ -34,15 +34,15 @@ import com.nextcloud.android.sso.ui.UiExceptionManager
  * contract requires the account name to be passed as input and returns an instance of
  * [SingleSignOnAccount]
  */
-class RequestAuthTokenContract constructor(
-    private val context: Context
+class RequestAuthTokenContract(
+    private val context: Context,
 ) : ActivityResultContract<String?, SingleSignOnAccount?>() {
 
     @Throws(NextcloudFilesAppAccountPermissionNotGrantedException::class)
     override fun createIntent(context: Context, input: String?): Intent {
         val account = AccountImporter.getAccountForName(context, input)
             ?: throw NextcloudFilesAppAccountPermissionNotGrantedException(context)
-        val componentName = FilesAppType.findByAccountType(account.type).packageId
+        val componentName = FilesAppTypeRegistry.getInstance().findByAccountType(account.type).packageId
         val authIntent = Intent()
         authIntent.component = ComponentName(
             componentName,

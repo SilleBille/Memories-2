@@ -15,7 +15,7 @@ package com.mkd.memories.login
 
 import android.accounts.AccountManager
 import androidx.lifecycle.ViewModel
-import com.nextcloud.android.sso.model.FilesAppType
+import com.nextcloud.android.sso.FilesAppTypeRegistry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,6 +51,6 @@ class LoginViewModel @Inject constructor() : ViewModel() {
     )
 
     companion object {
-        private val ACCOUNT_TYPES = FilesAppType.entries.map { it.accountType }.toTypedArray()
+        private val ACCOUNT_TYPES = FilesAppTypeRegistry.getInstance().accountTypes
     }
 }
