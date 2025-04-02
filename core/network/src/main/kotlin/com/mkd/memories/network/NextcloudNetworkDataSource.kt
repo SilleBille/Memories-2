@@ -13,7 +13,7 @@
 
 package com.mkd.memories.network
 
-import com.mkd.memories.network.data.NetworkPreviewResponse
+import com.mkd.memories.network.models.NetworkPreviewResponse
 
 /**
  * Interface representing network calls to the Nextcloud backend using [com.nextcloud.android.sso.aidl.NextcloudRequest.Builder]

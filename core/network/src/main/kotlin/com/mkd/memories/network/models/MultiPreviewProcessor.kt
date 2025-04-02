@@ -14,7 +14,6 @@
 package com.mkd.memories.network.models
 
 import com.google.gson.Gson
-import com.mkd.memories.network.data.NetworkPreviewResponse
 import java.io.InputStream
 import javax.inject.Inject
 import kotlin.jvm.java
@@ -50,23 +49,23 @@ class MultiPreviewProcessor @Inject constructor(
 
 
                 // Read the image data
-                val imageData = ByteArray(headerMap.contentLength)
+                val imageData = ByteArray(headerMap.len)
                 var totalRead = 0
-                while (totalRead < headerMap.contentLength) {
+                while (totalRead < headerMap.len) {
                     val read =
-                        inputStream.read(imageData, totalRead, headerMap.contentLength - totalRead)
+                        inputStream.read(imageData, totalRead, headerMap.len - totalRead)
                     if (read == -1) break // End of stream
                     totalRead += read
                 }
 
-                if (totalRead != headerMap.contentLength) break // Error reading
+                if (totalRead != headerMap.len) break // Error reading
 
                 // Add the preview to the list
                 networkPreviewResponses.add(
                     NetworkPreviewResponse(
-                        headerMap.requestId,
-                        headerMap.contentLength,
-                        headerMap.mimeType,
+                        headerMap.requestid,
+                        headerMap.len,
+                        headerMap.type,
                         imageData
                     )
                 )

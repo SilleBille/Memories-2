@@ -11,7 +11,7 @@
  *
  */
 
-package com.mkd.memories.network.data
+package com.mkd.memories.network.models
 
 import com.google.gson.annotations.SerializedName
 

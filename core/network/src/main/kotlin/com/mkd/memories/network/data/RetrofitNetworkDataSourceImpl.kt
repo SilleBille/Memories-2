@@ -15,6 +15,8 @@ package com.mkd.memories.network.data
 
 import com.mkd.memories.network.RetrofitNetworkDataSource
 import com.mkd.memories.network.factory.RetrofitApiFactory
+import com.mkd.memories.network.models.NetworkDayContents
+import com.mkd.memories.network.models.NetworkDays
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.http.GET

@@ -11,25 +11,12 @@
  *
  */
 
-package com.mkd.memories.network.data
-
-import com.google.gson.annotations.SerializedName
+package com.mkd.memories.network.models
 
 /**
- * Network representation of list of media info when fetched from /days/<dayid>
+ * Network representation of list of days when fetched from /days
  */
-data class NetworkDayContents(
-    val fileid: Long,
+data class NetworkDays(
     val dayid: Long,
-    val w: Long,
-    val h: Long,
-    val liveid: String?,
-    val etag: String,
-    val basename: String,
-    val epoch: Long,
-    val mimetype: String,
-    val buid: String,
-    val auid: String,
-    val isvideo: Int?,
-    val video_duration: Long?,
+    val count: Long,
 )

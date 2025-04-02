@@ -16,6 +16,9 @@ package com.mkd.memories.network.data
 import com.mkd.memories.network.NextcloudNetworkDataSource
 import com.mkd.memories.network.factory.NextcloudRequestApiFactory
 import com.mkd.memories.network.models.MultiPreviewProcessor
+import com.mkd.memories.network.models.NetworkMultiPreviewFileRequest
+import com.mkd.memories.network.models.NetworkMultiPreviewRequest
+import com.mkd.memories.network.models.NetworkPreviewResponse
 import com.nextcloud.android.sso.api.NextcloudAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

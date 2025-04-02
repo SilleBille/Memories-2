@@ -15,9 +15,9 @@ package com.mkd.memories.sync.data
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.mkd.memories.network.data.NetworkDayContents
-import com.mkd.memories.network.data.NetworkDays
-import com.mkd.memories.network.data.NetworkPreviewResponse
+import com.mkd.memories.network.models.NetworkDayContents
+import com.mkd.memories.network.models.NetworkDays
+import com.mkd.memories.network.models.NetworkPreviewResponse
 
 /**
  * Class summarizing Days and number of photos taken on that day.
@@ -27,7 +27,7 @@ data class Days(
     val count: Long,
 )
 
-fun List<NetworkDays>.parseDays() = map { Days(dayId = it.dayId, count = it.count) }
+fun List<NetworkDays>.parseDays() = map { Days(dayId = it.dayid, count = it.count) }
 
 data class DayContents(
     val fileId: Long,
@@ -63,7 +63,7 @@ enum class MimeType {
 fun List<NetworkPreviewResponse>.parsePreview() = map {
     Preview(
         preview = BitmapFactory.decodeByteArray(it.imageData, 0, it.imageData.size),
-        mimeType = when (it.mimeType) {
+        mimeType = when (it.type) {
             "image/jpeg" -> MimeType.PHOTO
             "image/mov" -> MimeType.MOTION_PHOTO
             "video/mp4" -> MimeType.VIDEO

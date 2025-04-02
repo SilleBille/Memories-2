@@ -13,8 +13,8 @@
 
 package com.mkd.memories.network
 
-import com.mkd.memories.network.data.NetworkDayContents
-import com.mkd.memories.network.data.NetworkDays
+import com.mkd.memories.network.models.NetworkDayContents
+import com.mkd.memories.network.models.NetworkDays
 
 /**
  * Interface representing network calls to the Nextcloud backend using Retrofit
