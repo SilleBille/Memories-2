@@ -11,7 +11,7 @@
  *
  */
 
-package com.mkd.memories.timeline.data
+package com.mkd.memories.sync.data
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

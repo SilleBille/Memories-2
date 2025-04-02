@@ -31,5 +31,5 @@ data class NetworkDayContents(
     val buid: String,
     val auid: String,
     val isvideo: Int?,
-    @SerializedName("video_duration") val videoDuration: Long?,
+    val video_duration: Long?,
 )

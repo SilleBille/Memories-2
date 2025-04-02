@@ -11,13 +11,13 @@
  *
  */
 
-package com.mkd.memories.timeline.data
+package com.mkd.memories.sync.data
 
 import com.mkd.memories.network.NextcloudNetworkDataSource
 import com.mkd.memories.network.RetrofitNetworkDataSource
 import javax.inject.Inject
 
-class TimelineRepositoryImpl @Inject constructor(
+internal class TimelineRepositoryImpl @Inject constructor(
     private val retrofitDatasource: RetrofitNetworkDataSource,
     private val nextcloudNetworkDataSource: NextcloudNetworkDataSource,
 ) : TimelineRepository {

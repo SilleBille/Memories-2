@@ -29,8 +29,8 @@ data class NetworkMultiPreviewFileRequest(
 )
 
 data class NetworkPreviewResponse(
-    @SerializedName("reqid") val requestId: String,
-    @SerializedName("len") val contentLength: Int,
-    @SerializedName("type") val mimeType: String,
+    val requestid: String,
+    val len: Int, // Content-length
+    val type: String, // MIME Type
     val imageData: ByteArray
 )

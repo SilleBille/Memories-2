@@ -11,12 +11,19 @@
  *
  */
 
-package com.mkd.memories.timeline.data
+package com.mkd.memories.sync.di
 
-interface TimelineRepository {
-    suspend fun getDays(): List<Days>
+import com.mkd.memories.sync.data.TimelineRepository
+import com.mkd.memories.sync.data.TimelineRepositoryImpl
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
-    suspend fun getDayContents(dayIds: List<Long>): List<DayContents>
+@Module
+@InstallIn(SingletonComponent::class)
+internal interface RepositoryModule {
 
-    suspend fun getMultiPreview(fileIds: List<Long>): List<Preview>
+    @Binds
+    fun bindsTimelineRepository(timelineRepository: TimelineRepositoryImpl): TimelineRepository
 }

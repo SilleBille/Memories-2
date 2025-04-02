@@ -19,6 +19,6 @@ import com.google.gson.annotations.SerializedName
  * Network representation of list of days when fetched from /days
  */
 data class NetworkDays(
-    @SerializedName("dayid") val dayId: Long,
+    val dayid: Long,
     val count: Long,
 )
