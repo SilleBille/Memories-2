@@ -15,6 +15,10 @@ package com.mkd.memories.sync.data
 
 import com.mkd.memories.network.NextcloudNetworkDataSource
 import com.mkd.memories.network.RetrofitNetworkDataSource
+import com.mkd.memories.sync.data.parsers.Preview
+import com.mkd.memories.sync.data.parsers.parseDayContents
+import com.mkd.memories.sync.data.parsers.parseDays
+import com.mkd.memories.sync.data.parsers.parsePreview
 import javax.inject.Inject
 
 internal class TimelineRepositoryImpl @Inject constructor(

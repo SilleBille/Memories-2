@@ -11,16 +11,12 @@
  *
  */
 
-package com.mkd.memories.sync.data
+package com.mkd.memories.core.model.data
 
-import com.mkd.memories.core.model.data.DayContent
-import com.mkd.memories.core.model.data.Days
-import com.mkd.memories.sync.data.parsers.Preview
-
-interface TimelineRepository {
-    suspend fun getDays(): List<Days>
-
-    suspend fun getDayContents(dayIds: List<Long>): List<DayContent>
-
-    suspend fun getMultiPreview(fileIds: List<Long>): List<Preview>
-}
+/**
+ * External data layer representation summarizing Days and number of photos taken on that day.
+ */
+data class Days(
+    val dayId: Long,
+    val count: Long,
+)

@@ -11,34 +11,21 @@
  *
  */
 
-package com.mkd.memories.sync.data
+package com.mkd.memories.sync.data.parsers
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.mkd.memories.core.model.data.DayContent
+import com.mkd.memories.core.model.data.Days
 import com.mkd.memories.network.models.NetworkDayContents
 import com.mkd.memories.network.models.NetworkDays
 import com.mkd.memories.network.models.NetworkPreviewResponse
 
-/**
- * Class summarizing Days and number of photos taken on that day.
- */
-data class Days(
-    val dayId: Long,
-    val count: Long,
-)
 
 fun List<NetworkDays>.parseDays() = map { Days(dayId = it.dayid, count = it.count) }
 
-data class DayContents(
-    val fileId: Long,
-    val dayId: Long,
-    val fileName: String,
-    val epoch: Long,
-    val mimetype: String,
-)
-
 fun List<NetworkDayContents>.parseDayContents() = map {
-    DayContents(
+    DayContent(
         fileId = it.fileid,
         dayId = it.dayid,
         fileName = it.basename,
@@ -47,6 +34,7 @@ fun List<NetworkDayContents>.parseDayContents() = map {
     )
 }
 
+// TODO: Move this to :domain
 data class Preview(
     //val fileId: Long,
     val preview: Bitmap,
