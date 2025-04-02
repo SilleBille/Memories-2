@@ -19,11 +19,11 @@ import com.nextcloud.android.sso.aidl.NextcloudRequest
 import javax.inject.Inject
 
 /**
- * Factory for creating NextcloudRequest instances.
+ * Factory for creating Raw NextcloudRequest instances.
  *
  * @param gson The Gson instance for JSON serialization.
  */
-class NextcloudRequestFactory @Inject constructor(
+class NextcloudRequestApiFactory @Inject constructor(
     private val gson: Gson,
 ) {
     /**

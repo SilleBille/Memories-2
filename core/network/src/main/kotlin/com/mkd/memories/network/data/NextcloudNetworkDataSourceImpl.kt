@@ -14,23 +14,25 @@
 package com.mkd.memories.network.data
 
 import com.mkd.memories.network.NextcloudNetworkDataSource
-import com.mkd.memories.network.factory.NextcloudRequestFactory
+import com.mkd.memories.network.factory.NextcloudRequestApiFactory
 import com.mkd.memories.network.models.MultiPreviewProcessor
 import com.nextcloud.android.sso.api.NextcloudAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class NextcloudNetworkDataSourceImpl @Inject constructor(
+@Singleton
+internal class NextcloudNetworkDataSourceImpl @Inject constructor(
     private val nextcloudApi: NextcloudAPI,
-    private val nextcloudRequestFactory: NextcloudRequestFactory,
+    private val nextcloudRequestApiFactory: NextcloudRequestApiFactory,
     private val multiPreviewProcessor: MultiPreviewProcessor,
 ) : NextcloudNetworkDataSource {
 
 
     private fun getCustomNetworkApi(requestBody: NetworkMultiPreviewRequest): List<NetworkPreviewResponse> {
 
-        val nextcloudRequest = nextcloudRequestFactory.create(
+        val nextcloudRequest = nextcloudRequestApiFactory.create(
             method = "POST",
             requestBody = requestBody,
             endpoint = "/image/multipreview"
