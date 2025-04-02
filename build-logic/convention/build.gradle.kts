@@ -38,6 +38,7 @@ dependencies {
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.room.gradlePlugin)
 }
 
 tasks {
@@ -76,6 +77,10 @@ gradlePlugin {
         register("androidLibraryJacoco") {
             id = libs.plugins.memories.android.library.jacoco.get().pluginId
             implementationClass = "AndroidLibraryJacocoConventionPlugin"
+        }
+        register("androidRoom") {
+            id = libs.plugins.memories.android.room.get().pluginId
+            implementationClass = "AndroidRoomConventionPlugin"
         }
         register("androidTest") {
             id = libs.plugins.memories.android.test.get().pluginId

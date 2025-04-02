@@ -25,6 +25,7 @@ material = "1.12.0"
 nextcloudSso = "1.3.2"
 okhttp = "4.12.0"
 retrofit = "2.11.0"
+room = "2.6.1"
 
 [libraries]
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
@@ -64,6 +65,9 @@ kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.re
 nextcloud-sso = { group = "com.github.nextcloud", name = "Android-SingleSignOn", version.ref = "nextcloudSso" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -72,6 +76,7 @@ compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -82,15 +87,17 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room" }
 
 # Plugins defined by this project
 memories-android-application = { id = "memories.android.application" }
 memories-android-application-compose = { id = "memories.android.application.compose" }
-memories-android-application-jacoco = { id = "nowinandroid.android.application.jacoco" }
+memories-android-application-jacoco = { id = "memories.android.application.jacoco" }
 memories-android-feature = { id = "memories.android.feature" }
 memories-android-library = { id = "memories.android.library" }
 memories-android-library-compose = { id = "memories.android.library.compose" }
 memories-android-library-jacoco = { id = "memories.android.library.jacoco" }
+memories-android-room = { id = "memories.android.room" }
 memories-android-test = { id = "memories.android.test" }
 memories-hilt = { id = "memories.hilt" }
 memories-jvm-library = { id = "memories.jvm.library" }
