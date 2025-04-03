@@ -16,6 +16,7 @@ package com.mkd.memories
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mkd.memories.core.auth.util.User
+import com.mkd.memories.sync.WorkManagerScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     user: User,
+    private val workManagerScheduler: WorkManagerScheduler,
 ) : ViewModel() {
 
     val isUserSignedIn: StateFlow<Boolean> = user.isUserSignedIn.stateIn(
@@ -33,4 +35,16 @@ class MainActivityViewModel @Inject constructor(
         initialValue = false
     )
 
+    private var hasSyncTriggered = false // Tracks whether WorkManager has been triggered
+
+    fun triggerSync() {
+        if (!hasSyncTriggered) {
+            hasSyncTriggered = true
+            workManagerScheduler.scheduleSync()
+        }
+    }
+
+    fun resetSync() {
+        hasSyncTriggered = false
+    }
 }

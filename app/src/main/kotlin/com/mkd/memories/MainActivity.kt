@@ -12,10 +12,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.navOptions
+import com.mkd.memories.designsystem.theme.MemoriesTheme
 import com.mkd.memories.login.navigation.navigateToLogin
 import com.mkd.memories.ui.MemoriesApp
 import com.mkd.memories.ui.rememberMemoriesAppState
-import com.mkd.memories.designsystem.theme.MemoriesTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -49,10 +49,13 @@ class MainActivity : ComponentActivity() {
     private fun launchLoginObserver(navHostController: NavHostController) {
         lifecycleScope.launch {
             viewModel.isUserSignedIn.collect { isUserSignedIn ->
-                if (!isUserSignedIn) {
+                if (isUserSignedIn) {
+                    viewModel.triggerSync()
+                } else {
+                    viewModel.resetSync()
                     navHostController.navigateToLogin(
                         navOptions {
-                            popUpTo(0) // reset backstack
+                            popUpTo(0) { inclusive = true } // reset backstack
                         }
                     )
                 }
