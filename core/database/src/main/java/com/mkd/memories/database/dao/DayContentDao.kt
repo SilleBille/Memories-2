@@ -11,15 +11,19 @@
  *
  */
 
-package com.mkd.memories.sync.data
+package com.mkd.memories.database.dao
 
-import com.mkd.memories.core.model.data.DayContent
-import com.mkd.memories.core.model.data.Days
-import com.mkd.memories.sync.data.parsers.Preview
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Upsert
+import com.mkd.memories.database.model.DayContentEntity
 
-interface TimelineRepository {
+@Dao
+interface DayContentDao {
 
-    suspend fun sync(): Boolean
+    @Upsert
+    suspend fun upsertDayContents(dayContents: List<DayContentEntity>)
 
-    suspend fun getMultiPreview(fileIds: List<Long>): List<Preview>
+    @Query("DELETE FROM day_content")
+    suspend fun clearDayContents()
 }

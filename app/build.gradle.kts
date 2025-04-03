@@ -61,6 +61,7 @@ dependencies {
 
     implementation(projects.core.auth)
     implementation(projects.core.designsystem)
+    implementation(projects.core.sync)
 
     implementation(projects.feature.login)
     implementation(projects.feature.timeline)

@@ -11,15 +11,18 @@
  *
  */
 
-package com.mkd.memories.sync.data
+package com.mkd.memories.sync.di
 
-import com.mkd.memories.core.model.data.DayContent
-import com.mkd.memories.core.model.data.Days
-import com.mkd.memories.sync.data.parsers.Preview
+import androidx.hilt.work.HiltWorkerFactory
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
-interface TimelineRepository {
-
-    suspend fun sync(): Boolean
-
-    suspend fun getMultiPreview(fileIds: List<Long>): List<Preview>
+/**
+ * An entry point to retrieve the [HiltWorkerFactory] at runtime
+ */
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface HiltWorkerFactoryEntryPoint {
+    fun hiltWorkerFactory(): HiltWorkerFactory
 }

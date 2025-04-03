@@ -11,15 +11,20 @@
  *
  */
 
-package com.mkd.memories.sync.data
+package com.mkd.memories.database
 
-import com.mkd.memories.core.model.data.DayContent
-import com.mkd.memories.core.model.data.Days
-import com.mkd.memories.sync.data.parsers.Preview
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import com.mkd.memories.database.dao.DayContentDao
+import com.mkd.memories.database.dao.DaysDao
+import com.mkd.memories.database.model.DayContentEntity
+import com.mkd.memories.database.model.DaysEntity
 
-interface TimelineRepository {
-
-    suspend fun sync(): Boolean
-
-    suspend fun getMultiPreview(fileIds: List<Long>): List<Preview>
+@Database(
+    entities = [DaysEntity::class, DayContentEntity::class],
+    version = 1,
+)
+abstract class MemoriesDatabase : RoomDatabase() {
+    abstract fun daysDao(): DaysDao
+    abstract fun dayContentDao(): DayContentDao
 }

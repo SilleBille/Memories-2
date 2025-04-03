@@ -15,24 +15,19 @@ package com.mkd.memories.sync.data.parsers
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.mkd.memories.core.model.data.DayContent
-import com.mkd.memories.core.model.data.Days
+import com.mkd.memories.database.model.DayContentEntity
+import com.mkd.memories.database.model.DaysEntity
 import com.mkd.memories.network.models.NetworkDayContents
 import com.mkd.memories.network.models.NetworkDays
 import com.mkd.memories.network.models.NetworkPreviewResponse
 
 
-fun List<NetworkDays>.parseDays() = map { Days(dayId = it.dayid, count = it.count) }
+fun NetworkDays.asEntity() = DaysEntity(dayId = dayid, count = count)
 
-fun List<NetworkDayContents>.parseDayContents() = map {
-    DayContent(
-        fileId = it.fileid,
-        dayId = it.dayid,
-        fileName = it.basename,
-        epoch = it.epoch,
-        mimetype = it.mimetype
-    )
-}
+fun NetworkDayContents.asEntity() = DayContentEntity(
+    fileId = fileid,
+    dayId = dayid,
+)
 
 // TODO: Move this to :domain
 data class Preview(

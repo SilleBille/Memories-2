@@ -40,12 +40,12 @@ class TimelineViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TimelineUIState())
 
     private fun initializeTimelineScreen() {
-        viewModelScope.launch {
-            val days = timelineRepository.getDays()
-
-            val previewsToLoad = timelineRepository.getDayContents(days.take(4).map { it.dayId })
-
-            _uiState.update { it.copy(baseUrl = previewsToLoad.joinToString(", \n\n")) }
-        }
+//        viewModelScope.launch {
+//            val days = timelineRepository.ge()
+//
+//            val previewsToLoad = timelineRepository.getDayContents(days.take(4).map { it.dayId })
+//
+//            _uiState.update { it.copy(baseUrl = previewsToLoad.joinToString(", \n\n")) }
+//        }
     }
 }

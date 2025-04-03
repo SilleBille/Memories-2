@@ -11,15 +11,13 @@
  *
  */
 
-package com.mkd.memories.sync.data
+package com.mkd.memories.database.model
 
-import com.mkd.memories.core.model.data.DayContent
-import com.mkd.memories.core.model.data.Days
-import com.mkd.memories.sync.data.parsers.Preview
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-interface TimelineRepository {
-
-    suspend fun sync(): Boolean
-
-    suspend fun getMultiPreview(fileIds: List<Long>): List<Preview>
-}
+@Entity(tableName = "days")
+data class DaysEntity(
+    @PrimaryKey val dayId: Long,
+    val count: Long
+)

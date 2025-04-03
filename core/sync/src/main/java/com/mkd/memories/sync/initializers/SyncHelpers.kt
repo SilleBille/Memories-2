@@ -11,15 +11,13 @@
  *
  */
 
-package com.mkd.memories.sync.data
+package com.mkd.memories.sync.initializers
 
-import com.mkd.memories.core.model.data.DayContent
-import com.mkd.memories.core.model.data.Days
-import com.mkd.memories.sync.data.parsers.Preview
+import androidx.work.Constraints
+import androidx.work.NetworkType
 
-interface TimelineRepository {
-
-    suspend fun sync(): Boolean
-
-    suspend fun getMultiPreview(fileIds: List<Long>): List<Preview>
-}
+// All sync work needs an internet connectionS
+val SyncConstraints
+    get() = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .build()

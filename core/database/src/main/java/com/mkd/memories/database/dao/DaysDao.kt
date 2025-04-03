@@ -11,15 +11,22 @@
  *
  */
 
-package com.mkd.memories.sync.data
+package com.mkd.memories.database.dao
 
-import com.mkd.memories.core.model.data.DayContent
-import com.mkd.memories.core.model.data.Days
-import com.mkd.memories.sync.data.parsers.Preview
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Upsert
+import com.mkd.memories.database.model.DaysEntity
+import kotlinx.coroutines.flow.Flow
 
-interface TimelineRepository {
+@Dao
+interface DaysDao {
+    /**
+     * Insert/Update Timeline data for each day
+     */
+    @Upsert
+    suspend fun upsertDays(days: List<DaysEntity>)
 
-    suspend fun sync(): Boolean
-
-    suspend fun getMultiPreview(fileIds: List<Long>): List<Preview>
+    @Query("SELECT * FROM days ORDER BY dayId DESC")
+    fun getDays(): Flow<List<DaysEntity>>
 }
