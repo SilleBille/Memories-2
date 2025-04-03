@@ -19,14 +19,20 @@ import com.mkd.memories.sync.data.TimelineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Locale
 import javax.inject.Inject
 
 data class TimelineUIState(
-    val baseUrl: String = "",
+    val days: Map<String, Int> = mapOf(),
 )
 
 @HiltViewModel
@@ -40,12 +46,20 @@ class TimelineViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TimelineUIState())
 
     private fun initializeTimelineScreen() {
-//        viewModelScope.launch {
-//            val days = timelineRepository.ge()
-//
-//            val previewsToLoad = timelineRepository.getDayContents(days.take(4).map { it.dayId })
-//
-//            _uiState.update { it.copy(baseUrl = previewsToLoad.joinToString(", \n\n")) }
-//        }
+        timelineRepository.getDays().onEach { days ->
+            _uiState.update { it.copy(days = days.associate { getFormattedDate(it.dayId) to it.count.toInt() }) }
+        }.launchIn(viewModelScope)
+
+
+    }
+
+    private fun getFormattedDate(dayId: Long): String {
+        val epochTime = dayId * 86400
+        val instant = Instant.ofEpochSecond(epochTime)
+        val date = instant.atZone(ZoneOffset.UTC).toLocalDate()
+        return DateTimeFormatter
+            .ofLocalizedDate(FormatStyle.MEDIUM)
+            .withLocale(Locale.getDefault())
+            .format(date)
     }
 }

@@ -13,38 +13,112 @@
 
 package com.mkd.memories.timeline.presentation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.mkd.memories.designsystem.theme.MemoriesTheme
+import javax.annotation.processing.Generated
 
 @Composable
 internal fun TimelineRoute(
     viewModel: TimelineViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
+    //val dayContents = viewModel.dayContentsPagingFlow.collectAsLazyPagingItems()
+    //viewModel.fetchPreview(dayContents.itemSnapshotList.items)
     TimelineScreen(
-        name = uiState.baseUrl,
+        modifier = Modifier.fillMaxSize(),
+        timelineData = uiState.days,
     )
 
 }
 
 @Composable
-internal fun TimelineScreen(
-    name: String,
+private fun TimelineScreen(
+    timelineData: Map<String, Int>,
     modifier: Modifier = Modifier,
 ) {
 
     Box(
         modifier = modifier,
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.TopStart
     ) {
-        Text(text = "Hello $name")
+        if (timelineData.isEmpty()) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(32.dp)
+            )
+        } else {
+            val gridType by remember { mutableStateOf(GridCells.Adaptive(120.dp)) }
+            LazyVerticalGrid(
+                modifier = Modifier.padding(vertical = 24.dp),
+                columns = gridType,
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                // TODO: Add Photo Scroll for Stories
+
+                timelineData.forEach {
+                    DayView(header = it.key, items = it.value)
+                }
+            }
+        }
     }
+}
+
+private fun LazyGridScope.DayView(
+    header: String,
+    items: Int,
+) {
+    // Place the header first
+    item(span = { GridItemSpan(maxLineSpan) }) {
+        Column {
+            Spacer(modifier = Modifier.padding(top = 24.dp))
+            Text(
+                modifier = Modifier.padding(
+                    vertical = 16.dp,
+                    horizontal = 8.dp
+                ),
+                text = header,
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+    }
+    items(items) {
+        Box(
+            modifier = Modifier
+                .clipToBounds()
+                .aspectRatio(1f)
+                .size(120.dp)
+                .background(color = Color.Gray),
+        )
+    }
+}
 
 }

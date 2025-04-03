@@ -15,6 +15,7 @@ package com.mkd.memories.sync.data.parsers
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.mkd.memories.core.model.data.Days
 import com.mkd.memories.database.model.DayContentEntity
 import com.mkd.memories.database.model.DaysEntity
 import com.mkd.memories.network.models.NetworkDayContents
@@ -23,6 +24,8 @@ import com.mkd.memories.network.models.NetworkPreviewResponse
 
 
 fun NetworkDays.asEntity() = DaysEntity(dayId = dayid, count = count)
+
+fun DaysEntity.asExternalModel() = Days(dayId = dayId, count = count)
 
 fun NetworkDayContents.asEntity() = DayContentEntity(
     fileId = fileid,

@@ -15,14 +15,17 @@ package com.mkd.memories.sync.data
 
 import com.mkd.memories.database.dao.DayContentDao
 import com.mkd.memories.database.dao.DaysDao
+import com.mkd.memories.database.model.DaysEntity
 import com.mkd.memories.network.NextcloudNetworkDataSource
 import com.mkd.memories.network.RetrofitNetworkDataSource
 import com.mkd.memories.network.models.NetworkDayContents
 import com.mkd.memories.network.models.NetworkDays
 import com.mkd.memories.sync.data.parsers.Preview
 import com.mkd.memories.sync.data.parsers.asEntity
+import com.mkd.memories.sync.data.parsers.asExternalModel
 import com.mkd.memories.sync.data.parsers.parsePreview
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -47,6 +50,10 @@ internal class TimelineRepositoryImpl @Inject constructor(
         true
 
     }
+
+    override fun getDays() = daysDao.getDays()
+        .map { it.map(DaysEntity::asExternalModel) }
+
 
     override suspend fun getMultiPreview(fileIds: List<Long>): List<Preview> =
         nextcloudNetworkDataSource.getMultiPreview(fileIds).parsePreview()

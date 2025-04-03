@@ -13,13 +13,15 @@
 
 package com.mkd.memories.sync.data
 
-import com.mkd.memories.core.model.data.DayContent
 import com.mkd.memories.core.model.data.Days
 import com.mkd.memories.sync.data.parsers.Preview
+import kotlinx.coroutines.flow.Flow
 
 interface TimelineRepository {
 
     suspend fun sync(): Boolean
+
+    fun getDays(): Flow<List<Days>>
 
     suspend fun getMultiPreview(fileIds: List<Long>): List<Preview>
 }
