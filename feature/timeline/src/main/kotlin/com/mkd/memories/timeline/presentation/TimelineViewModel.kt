@@ -15,6 +15,7 @@ package com.mkd.memories.timeline.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mkd.memories.sync.SyncManagerScheduler
 import com.mkd.memories.sync.data.TimelineRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,11 +33,13 @@ import java.util.Locale
 import javax.inject.Inject
 
 data class TimelineUIState(
+    val isRefreshing: Boolean = false,
     val days: Map<String, Int> = mapOf(),
 )
 
 @HiltViewModel
 class TimelineViewModel @Inject constructor(
+    private val syncManagerScheduler: SyncManagerScheduler,
     private val timelineRepository: TimelineRepository,
 ) : ViewModel() {
 
@@ -49,8 +52,10 @@ class TimelineViewModel @Inject constructor(
         timelineRepository.getDays().onEach { days ->
             _uiState.update { it.copy(days = days.associate { getFormattedDate(it.dayId) to it.count.toInt() }) }
         }.launchIn(viewModelScope)
+    }
 
-
+    fun refresh() {
+        syncManagerScheduler.scheduleSync()
     }
 
     private fun getFormattedDate(dayId: Long): String {

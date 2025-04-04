@@ -18,7 +18,7 @@ import com.mkd.memories.sync.initializers.Sync
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class WorkManagerScheduler @Inject constructor(
+class SyncManagerScheduler @Inject constructor(
     @ApplicationContext private val appContext: Context,
 ) {
 

@@ -11,6 +11,8 @@
  *
  */
 
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.mkd.memories.timeline.presentation
 
 import androidx.compose.foundation.background
@@ -27,8 +29,10 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,8 +56,10 @@ internal fun TimelineRoute(
     //val dayContents = viewModel.dayContentsPagingFlow.collectAsLazyPagingItems()
     //viewModel.fetchPreview(dayContents.itemSnapshotList.items)
     TimelineScreen(
-        modifier = Modifier.fillMaxSize(),
         timelineData = uiState.days,
+        isRefreshing = uiState.isRefreshing,
+        onRefresh = viewModel::refresh,
+        modifier = Modifier.fillMaxSize(),
     )
 
 }
@@ -61,12 +67,15 @@ internal fun TimelineRoute(
 @Composable
 private fun TimelineScreen(
     timelineData: Map<String, Int>,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
-    Box(
+    PullToRefreshBox(
         modifier = modifier,
-        contentAlignment = Alignment.TopStart
+        isRefreshing = isRefreshing,
+        onRefresh = onRefresh,
     ) {
         if (timelineData.isEmpty()) {
             CircularProgressIndicator(
@@ -119,6 +128,4 @@ private fun LazyGridScope.DayView(
                 .background(color = Color.Gray),
         )
     }
-}
-
 }
