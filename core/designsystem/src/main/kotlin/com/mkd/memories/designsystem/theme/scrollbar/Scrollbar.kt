@@ -81,8 +81,9 @@ fun BoxScope.Scrollbar(
     val scope = rememberCoroutineScope()
     val thumbHeight = with(density) { ThumbHeight.toPx() }
     val showScrollbar = state.isScrollInProgress || isDragging
-    val firstVisibleItemIndex by remember { derivedStateOf { state.firstVisibleItemIndex } }
-    val firstItemScrollOffset by remember { derivedStateOf { state.firstVisibleItemScrollOffset } }
+    val scrollInfo by remember {
+        derivedStateOf { state.firstVisibleItemIndex to state.firstVisibleItemScrollOffset }
+    }
 
 
     // Auto-hide scrollbar
@@ -96,11 +97,11 @@ fun BoxScope.Scrollbar(
     }
 
     // Calculate the thumb offset and ensure it doesn't go offscreen
-    LaunchedEffect(firstVisibleItemIndex, firstItemScrollOffset, isDragging) {
+    LaunchedEffect(scrollInfo, isDragging) {
         if (!isDragging) {
             val itemCount = state.layoutInfo.totalItemsCount
             if (itemCount > 0) {
-                val scrollProgress = firstVisibleItemIndex.toFloat() / (itemCount - 1)
+                val scrollProgress = scrollInfo.first.toFloat() / (itemCount - 1)
                 thumbOffsetY = (scrollAreaHeight - thumbHeight) * scrollProgress
             }
         }
