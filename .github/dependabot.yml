@@ -11,3 +11,5 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "Auto-update: "
+    assignees:
+      - SilleBille
