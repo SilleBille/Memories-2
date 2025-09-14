@@ -67,7 +67,7 @@ jobs:
     timeout-minutes: 55
     strategy:
       matrix:
-        api-level: [26, 35] # min and current version
+        api-level: [26, 36] # min and current version
 
     steps:
       - name: Delete unnecessary tools 🔧
