@@ -1,0 +1,61 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "7ec1f3bb9aede60758ee4fa244bc8c4a",
+    "entities": [
+      {
+        "tableName": "days",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`dayId` INTEGER NOT NULL, `count` INTEGER NOT NULL, PRIMARY KEY(`dayId`))",
+        "fields": [
+          {
+            "fieldPath": "dayId",
+            "columnName": "dayId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "count",
+            "columnName": "count",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "dayId"
+          ]
+        }
+      },
+      {
+        "tableName": "day_content",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fileId` INTEGER NOT NULL, `dayId` INTEGER NOT NULL, PRIMARY KEY(`fileId`))",
+        "fields": [
+          {
+            "fieldPath": "fileId",
+            "columnName": "fileId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dayId",
+            "columnName": "dayId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "fileId"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7ec1f3bb9aede60758ee4fa244bc8c4a')"
+    ]
+  }
+}
