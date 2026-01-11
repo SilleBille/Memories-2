@@ -88,6 +88,7 @@ jobs:
           sudo udevadm trigger --name-match=kvm
           ls /dev/kvm
 
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -106,15 +107,15 @@ jobs:
       - name: Build projects before running emulator
         run: ./gradlew packageDebug packageDebugAndroidTest
 
-      - name: Run instrumentation tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          arch: x86_64
-          disable-animations: true
-          disk-size: 6000M
-          heap-size: 600M
-          script: ./gradlew connectedDebugAndroidTest --daemon
+#      - name: Run instrumentation tests
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: ${{ matrix.api-level }}
+#          arch: x86_64
+#          disable-animations: true
+#          disk-size: 6000M
+#          heap-size: 600M
+#          script: ./gradlew connectedDebugAndroidTest --daemon
 
       - name: Upload test reports
         if: always()

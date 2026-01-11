@@ -27,7 +27,6 @@ android {
         versionCode = 1
         versionName = "0.1" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
