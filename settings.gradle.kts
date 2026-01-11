@@ -35,7 +35,6 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":core:auth")
 include(":core:designsystem")
-include(":core:testing")
 
 include(":feature:login")
 include(":feature:timeline")

@@ -27,7 +27,6 @@ android {
         versionCode = 1
         versionName = "0.1" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -70,9 +69,7 @@ dependencies {
 
     kspTest(libs.hilt.compiler)
 
-    testImplementation(projects.core.testing)
     testImplementation(libs.hilt.android.testing)
 
-    androidTestImplementation(projects.core.testing)
     androidTestImplementation(libs.hilt.android.testing)
 }
