@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 concurrency:
   group: build-${{ github.ref }}
@@ -13,7 +13,7 @@ concurrency:
 jobs:
   test_and_apk:
     name: "Local tests and APKs"
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     permissions:
       contents: write
@@ -40,7 +40,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Check build-logic
-        run: ./gradlew check -p build-logic
+        run: ./gradlew :build-logic:convention:check
 
       - name: Run local tests
         run: ./gradlew testDebug
@@ -63,11 +63,11 @@ jobs:
           path: '**/build/test-results/test*UnitTest/**.xml'
 
   androidTest:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     timeout-minutes: 55
     strategy:
       matrix:
-        api-level: [26, 36] # min and current version
+        api-level: [ 26, 36 ] # min and current version
 
     steps:
       - name: Delete unnecessary tools 🔧

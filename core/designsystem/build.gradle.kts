@@ -33,8 +33,6 @@ dependencies {
 
     testImplementation(libs.androidx.compose.ui.test)
     testImplementation(libs.hilt.android.testing)
-    testImplementation(projects.core.testing)
 
     androidTestImplementation(libs.androidx.compose.ui.test)
-    androidTestImplementation(projects.core.testing)
 }
