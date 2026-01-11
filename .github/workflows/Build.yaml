@@ -13,7 +13,7 @@ concurrency:
 jobs:
   test_and_apk:
     name: "Local tests and APKs"
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     permissions:
       contents: write
@@ -63,7 +63,7 @@ jobs:
           path: '**/build/test-results/test*UnitTest/**.xml'
 
   androidTest:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 55
     strategy:
       matrix:
