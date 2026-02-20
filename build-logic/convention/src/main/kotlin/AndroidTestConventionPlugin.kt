@@ -11,7 +11,7 @@
  *
  */
 
-import com.android.build.gradle.TestExtension
+import com.android.build.api.dsl.TestExtension
 import com.mkd.memories.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
