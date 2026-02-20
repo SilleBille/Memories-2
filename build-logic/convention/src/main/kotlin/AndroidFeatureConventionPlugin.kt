@@ -11,7 +11,7 @@
  *
  */
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import com.mkd.memories.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project

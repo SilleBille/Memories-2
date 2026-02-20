@@ -22,7 +22,6 @@ class AndroidTestConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             apply(plugin = "com.android.test")
-            apply(plugin = "org.jetbrains.kotlin.android")
 
             extensions.configure<TestExtension> {
                 configureKotlinAndroid(this)

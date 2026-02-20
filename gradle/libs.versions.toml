@@ -101,4 +101,3 @@ memories-android-room = { id = "memories.android.room" }
 memories-android-test = { id = "memories.android.test" }
 memories-hilt = { id = "memories.hilt" }
 memories-jvm-library = { id = "memories.jvm.library" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

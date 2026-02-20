@@ -11,8 +11,8 @@
  *
  */
 
+import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
-import com.android.build.gradle.LibraryExtension
 import com.mkd.memories.configureKotlinAndroid
 import com.mkd.memories.disableUnnecessaryAndroidTests
 import com.mkd.memories.libs
@@ -26,11 +26,9 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             apply(plugin = "com.android.library")
-            apply(plugin = "org.jetbrains.kotlin.android")
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
-                defaultConfig.targetSdk = 36
                 testOptions.animationsDisabled = true
                 // The resource prefix is derived from the module name,
                 // so resources inside ":core:module1" must be prefixed with "core_module1_"
