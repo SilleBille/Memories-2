@@ -25,6 +25,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinBaseExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import kotlin.text.get
 
 /**
  * Configure base Kotlin with Android options
@@ -35,15 +36,15 @@ internal fun Project.configureKotlinAndroid(
     commonExtension.apply {
         compileSdk = 36
 
-        defaultConfig {
+        defaultConfig.apply {
             minSdk = 26
         }
 
-        compileOptions {
+        compileOptions.apply {
             // Up to Java 11 APIs are available through desugaring
             // https://developer.android.com/studio/write/java11-minimal-support-table
-            sourceCompatibility = JavaVersion.VERSION_17
-            targetCompatibility = JavaVersion.VERSION_17
+            sourceCompatibility = JavaVersion.VERSION_11
+            targetCompatibility = JavaVersion.VERSION_11
             isCoreLibraryDesugaringEnabled = true
         }
     }
@@ -103,7 +104,7 @@ private inline fun <reified T : KotlinBaseExtension> Project.configureKotlin() =
              * The binary signature changes. The error on the declaration is no longer reported.
              * '-Xconsistent-data-class-copy-visibility' compiler flag and ConsistentCopyVisibility annotation are now unnecessary.
              */
-            "-Xconsistent-data-class-copy-visibility"
+            "-Xconsistent-data-class-copy-visibility",
         )
     }
 }
